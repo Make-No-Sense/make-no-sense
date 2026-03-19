@@ -1,0 +1,34 @@
+import { client } from "@/sanity/lib/client";
+import { galleryImagesQuery } from "@/sanity/lib/queries";
+import { GalleryGrid } from "@/components/gallery/GalleryGrid";
+
+export const revalidate = 60;
+
+export const metadata = {
+  title: "Gallery | Make No Sense",
+  description: "Photos from the truck, the food, and the people — Make No Sense Nashville.",
+};
+
+export default async function GalleryPage() {
+  const images = await client.fetch(galleryImagesQuery);
+
+  console.log("[gallery] fetched images:", images);
+
+  return (
+    <div className="bg-warm-cream min-h-screen">
+      {/* Page header */}
+      <div className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl tracking-tight">
+          Gallery
+        </h1>
+        <div className="mx-auto mt-4 h-1 w-16 bg-brick-red rounded" />
+        <p className="mt-5 text-warm-cream/60 text-base">
+          From the truck to the table.
+        </p>
+      </div>
+
+      {/* Grid + filters (client) */}
+      <GalleryGrid images={images ?? []} />
+    </div>
+  );
+}

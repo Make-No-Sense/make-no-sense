@@ -30,12 +30,31 @@ export const menuItemsByCategoryQuery = defineQuery(`
     badge,
     available,
     image {
-      asset,
+      asset {
+        _ref,
+        _type
+      },
       alt
     },
     "categoryId": category->_id,
     "categorySlug": category->slug.current,
     "categoryName": category->name
+  }
+`)
+
+export const galleryImagesQuery = defineQuery(`
+  *[_type == "galleryImage"] | order(featured desc, _createdAt desc) {
+    _id,
+    image {
+      asset {
+        _ref,
+        _type
+      },
+      alt
+    },
+    caption,
+    category,
+    featured
   }
 `)
 
@@ -46,7 +65,10 @@ export const featuredMenuItemsQuery = defineQuery(`
     price,
     badge,
     image {
-      asset,
+      asset {
+        _ref,
+        _type
+      },
       alt
     },
     "category": category->name
