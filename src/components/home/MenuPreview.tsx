@@ -41,7 +41,7 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
               >
                 {/* Image */}
                 <div className="relative h-56 bg-navy-black/60">
-                  {item.image?.asset ? (
+                  {item.image?.asset?._ref ? (
                     <Image
                       src={urlFor(item.image).width(600).height(450).url()}
                       alt={item.image.alt ?? item.name}
@@ -79,7 +79,7 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
                       {item.name}
                     </h3>
                   </div>
-                  {item.price != null && (
+                  {item.price != null && item.price > 0 && (
                     <span className="font-mono text-muted-gold text-lg font-bold shrink-0">
                       ${item.price.toFixed(2)}
                     </span>
