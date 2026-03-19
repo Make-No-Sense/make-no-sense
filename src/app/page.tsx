@@ -12,7 +12,7 @@ export default async function HomePage() {
     client.fetch(siteSettingsQuery),
     client.fetch(featuredMenuItemsQuery),
   ])
-
+  
   return (
     <>
       <HeroSection
