@@ -12,7 +12,6 @@ export const metadata = {
 export default async function GalleryPage() {
   const images = await client.fetch(galleryImagesQuery);
 
-  console.log("[gallery] fetched images:", images);
 
   return (
     <div className="bg-warm-cream min-h-screen">

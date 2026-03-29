@@ -31,7 +31,7 @@ export function MenuItemCard({ item }: { item: MenuItem }) {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-deep-navy/20 text-4xl uppercase tracking-widest">
+            <span className="font-display text-deep-navy/20 text-4xl sm:text-5xl uppercase tracking-widest">
               MNS
             </span>
           </div>
