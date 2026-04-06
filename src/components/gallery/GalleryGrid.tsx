@@ -115,7 +115,7 @@ function Lightbox({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute -top-10 right-0 text-warm-cream/70 hover:text-warm-cream transition-colors p-1"
+          className="absolute -top-10 right-0 text-warm-cream/70 hover:text-warm-cream transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Close lightbox"
         >
           <X size={28} />

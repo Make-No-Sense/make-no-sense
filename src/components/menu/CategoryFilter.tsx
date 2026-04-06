@@ -36,10 +36,23 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
   function scrollTo(slug: string) {
     const el = document.getElementById(slug);
     if (!el) return;
+
     const barHeight = barRef.current?.offsetHeight ?? 0;
-    const stickyOffset = 64 + barHeight; // navbar (h-16) + filter bar
-    const top = el.getBoundingClientRect().top + window.scrollY - stickyOffset - 16;
-    window.scrollTo({ top, behavior: "smooth" });
+    const navHeight = 64; // h-16
+    const totalSticky = navHeight + barHeight;
+
+    // Get element position relative to document
+    const elementTop = el.getBoundingClientRect().top + window.scrollY;
+
+    // Calculate target scroll position (element top - sticky headers - small margin)
+    const targetScroll = elementTop - totalSticky - 16;
+
+    // Scroll to position
+    window.scrollTo({
+      top: targetScroll,
+      behavior: "smooth"
+    });
+
     setActive(slug);
   }
 
@@ -52,10 +65,11 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
         <div className="flex gap-1 py-3 min-w-max sm:min-w-0 sm:flex-wrap">
           {categories.map(({ _id, name, slug }) => (
             <button
+              type="button"
               key={_id}
               onClick={() => scrollTo(slug)}
               className={`
-                px-4 py-2 font-display text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap
+                px-4 py-2 font-display text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer
                 ${
                   active === slug
                     ? "bg-deep-navy text-warm-cream"

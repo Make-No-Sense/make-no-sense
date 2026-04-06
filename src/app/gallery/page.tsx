@@ -14,7 +14,7 @@ export default async function GalleryPage() {
 
 
   return (
-    <div className="bg-warm-cream min-h-screen">
+    <div className="bg-warm-cream min-h-screen w-full overflow-x-hidden">
       {/* Page header */}
       <div className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl tracking-tight">

@@ -16,22 +16,23 @@ const BADGE_STYLES: Record<string, string> = {
   Limited: "bg-deep-navy text-warm-cream",
 };
 
-export function MenuItemCard({ item }: { item: MenuItem }) {
+export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: boolean }) {
   return (
-    <div className="bg-pale-blue rounded-lg overflow-hidden flex flex-col">
+    <div className="bg-pale-blue rounded-lg overflow-hidden flex flex-col h-full">
       {/* Image */}
-      <div className="relative h-44 bg-deep-navy/10">
+      <div className="relative aspect-video bg-deep-navy/10">
         {item.image?.asset?._ref ? (
           <Image
             src={urlFor(item.image).width(500).height(350).url()}
             alt={item.image.alt ?? item.name}
             fill
+            priority={priority}
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-deep-navy/20 text-4xl sm:text-5xl uppercase tracking-widest">
+            <span className="font-display text-deep-navy/20 text-4xl uppercase tracking-widest">
               MNS
             </span>
           </div>

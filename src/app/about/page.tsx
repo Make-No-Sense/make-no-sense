@@ -27,7 +27,7 @@ const PILLARS = [
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full overflow-x-hidden">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="bg-deep-navy py-24 px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl lg:text-7xl tracking-tight">

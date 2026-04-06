@@ -47,7 +47,8 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden text-warm-cream p-1"
+            type="button"
+            className="md:hidden text-warm-cream p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -56,28 +57,30 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - OUTSIDE max-w-7xl container */}
       {open && (
-        <div className="md:hidden bg-navy-black border-t border-white/10">
-          <nav className="flex flex-col px-4 py-4 gap-1">
-            {navLinks.map(({ href, label }) => (
+        <div className="md:hidden bg-navy-black border-t border-white/10 w-full">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <nav className="flex flex-col py-4 gap-1">
+              {navLinks.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className="font-display text-sm uppercase tracking-wider text-warm-cream/80 hover:text-warm-cream py-3 px-2 border-b border-white/5 transition-colors min-h-[44px] flex items-center"
+                >
+                  {label}
+                </Link>
+              ))}
               <Link
-                key={href}
-                href={href}
+                href="/menu"
                 onClick={() => setOpen(false)}
-                className="font-display text-sm uppercase tracking-wider text-warm-cream/80 hover:text-warm-cream py-3 border-b border-white/5 transition-colors"
+                className="mt-3 bg-brick-red px-5 py-3 text-center font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brick-red/90 transition-colors rounded min-h-[44px] flex items-center justify-center"
               >
-                {label}
+                Order Now
               </Link>
-            ))}
-            <Link
-              href="/menu"
-              onClick={() => setOpen(false)}
-              className="mt-3 bg-brick-red px-5 py-3 text-center font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brick-red/90 transition-colors rounded"
-            >
-              Order Now
-            </Link>
-          </nav>
+            </nav>
+          </div>
         </div>
       )}
     </header>

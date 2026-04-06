@@ -48,7 +48,7 @@ export function EventsGrid({ events }: FindUsPageProps) {
             return (
               <div
                 key={event.id}
-                className="bg-pale-blue rounded-lg border-l-4 border-brick-red p-5 sm:p-6 flex flex-col gap-4"
+                className="bg-pale-blue rounded-lg border-l-4 border-brick-red p-5 sm:p-6 flex flex-col gap-4 w-full"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -90,7 +90,7 @@ export function EventsGrid({ events }: FindUsPageProps) {
           })}
         </div>
       ) : (
-        <div className="bg-pale-blue rounded-lg border-l-4 border-brick-red p-6 sm:p-8 md:p-12 text-center">
+        <div className="bg-pale-blue rounded-lg border-l-4 border-brick-red p-5 sm:p-6 md:p-8 text-center w-full">
           <Calendar size={48} className="mx-auto text-brick-red mb-4" />
           <p className="font-display font-semibold uppercase text-deep-navy text-lg md:text-xl tracking-tight">
             Check back soon
