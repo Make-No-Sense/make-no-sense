@@ -44,8 +44,9 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
     // Get element position relative to document
     const elementTop = el.getBoundingClientRect().top + window.scrollY;
 
-    // Calculate target scroll position (element top - sticky headers - small margin)
-    const targetScroll = elementTop - totalSticky - 16;
+    // Calculate target scroll position - scroll to show section while keeping bar visible
+    // Don't scroll past the sticky bar, just scroll enough to show the section title
+    const targetScroll = elementTop - totalSticky - 8; // minimal margin below bar
 
     // Scroll to position
     window.scrollTo({
@@ -69,7 +70,7 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
               key={_id}
               onClick={() => scrollTo(slug)}
               className={`
-                px-4 py-2 font-display text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer
+                px-4 py-2 font-display text-sm uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer
                 ${
                   active === slug
                     ? "bg-deep-navy text-warm-cream"

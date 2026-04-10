@@ -46,9 +46,9 @@ export default async function MenuPage() {
           </div>
         )}
 
-        {categories.map((category) => {
+        {categories.map((category: any) => {
           const categoryItems = items.filter(
-            (item) => item.categoryId === category._id
+            (item: any) => item.categoryId === category._id
           );
 
           if (categoryItems.length === 0) return null;
@@ -68,7 +68,7 @@ export default async function MenuPage() {
 
               {/* Items grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {categoryItems.map((item, idx) => (
+                {categoryItems.map((item: any, idx: number) => (
                   <MenuItemCard key={item._id} item={item} priority={idx === 0} />
                 ))}
               </div>

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Truck, MapPin } from "lucide-react";
 import { CalendarEvent } from "@/lib/calendar";
 
