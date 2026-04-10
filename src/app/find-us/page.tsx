@@ -1,10 +1,18 @@
-import { client } from "@/sanity/lib/client";
-import { siteSettingsQuery } from "@/sanity/lib/queries";
-import { getUpcomingEvents } from "@/lib/calendar";
+import { getSFFEvents, normalizeSFFEvents } from "@/lib/sff";
+import { getUpcomingEvents, normalizeCalendarEvents } from "@/lib/calendar";
 import { EventsGrid } from "@/components/find-us/EventsGrid";
 import { LiveMap } from "@/components/find-us/LiveMap";
+import { client } from "@/sanity/lib/client";
+import { siteSettingsQuery } from "@/sanity/lib/queries";
+import type { TruckEvent } from "@/lib/events";
 
-export const revalidate = 3600; // 1 hour
+// ─── Switch event source here ───────────────────────────────────────────────
+// "sff"      → Street Food Finder (scraper), falls back to calendar if empty
+// "calendar" → Google Calendar only
+const EVENT_SOURCE: "sff" | "calendar" = "calendar";
+// ────────────────────────────────────────────────────────────────────────────
+
+export const revalidate = 3600;
 
 export const metadata = {
   title: "Find Us | Make No Sense",
@@ -12,13 +20,28 @@ export const metadata = {
     "Find Make No Sense food truck in Nashville. Map, upcoming locations, and event schedule.",
 };
 
-export default async function FindUsPage() {
-  // Fetch site settings for calendar ID
+async function getCalendarEvents(): Promise<TruckEvent[]> {
   const settings = await client.fetch(siteSettingsQuery);
-  const events = await getUpcomingEvents(settings?.googleCalendarId);
+  const raw = await getUpcomingEvents(settings?.googleCalendarId);
+  return normalizeCalendarEvents(raw);
+}
+
+export default async function FindUsPage() {
+  let events: TruckEvent[] = [];
+
+  if (EVENT_SOURCE === "sff") {
+    const raw = await getSFFEvents();
+    events = normalizeSFFEvents(raw);
+    // Fall back to Google Calendar if SFF returns nothing
+    if (events.length === 0) {
+      events = await getCalendarEvents();
+    }
+  } else {
+    events = await getCalendarEvents();
+  }
 
   return (
-    <div className="flex flex-col w-full overflow-x-hidden">
+    <div className="flex flex-col w-full">
       {/* ── Header ───────────────────────────────────────────────────────── */}
       <section className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl lg:text-7xl tracking-tight">

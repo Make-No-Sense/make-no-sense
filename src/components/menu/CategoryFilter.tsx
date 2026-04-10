@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
 interface Category {
@@ -11,11 +10,12 @@ interface Category {
 export function CategoryFilter({ categories }: { categories: Category[] }) {
   const [active, setActive] = useState<string>(categories[0]?.slug ?? "");
   const barRef = useRef<HTMLDivElement>(null);
+  const isScrolling = useRef(false);
 
-  // Highlight the category whose section is nearest the top of the viewport
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        if (isScrolling.current) return; // ignore during programmatic scroll
         for (const entry of entries) {
           if (entry.isIntersecting) {
             setActive(entry.target.id);
@@ -38,23 +38,22 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
     if (!el) return;
 
     const barHeight = barRef.current?.offsetHeight ?? 0;
-    const navHeight = 64; // h-16
-    const totalSticky = navHeight + barHeight;
-
-    // Get element position relative to document
+    const totalSticky = 64 + barHeight;
     const elementTop = el.getBoundingClientRect().top + window.scrollY;
 
-    // Calculate target scroll position - scroll to show section while keeping bar visible
-    // Don't scroll past the sticky bar, just scroll enough to show the section title
-    const targetScroll = elementTop - totalSticky - 8; // minimal margin below bar
-
-    // Scroll to position
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth"
-    });
-
+    isScrolling.current = true;
     setActive(slug);
+
+    window.scrollTo({ top: elementTop - totalSticky - 8, behavior: "smooth" });
+
+    const done = () => { isScrolling.current = false; };
+
+    if ("onscrollend" in window) {
+      window.addEventListener("scrollend", done, { once: true });
+    } else {
+      // Fallback for older Safari — generous timeout to cover long-distance scrolls
+      setTimeout(done, 1500);
+    }
   }
 
   return (
@@ -71,10 +70,9 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
               onClick={() => scrollTo(slug)}
               className={`
                 px-4 py-2 font-display text-sm uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer
-                ${
-                  active === slug
-                    ? "bg-deep-navy text-warm-cream"
-                    : "text-soft-charcoal hover:bg-pale-blue"
+                ${active === slug
+                  ? "bg-deep-navy text-warm-cream"
+                  : "text-soft-charcoal hover:bg-pale-blue"
                 }
               `}
             >

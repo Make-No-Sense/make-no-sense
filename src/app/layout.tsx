@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Oswald, Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -30,7 +30,7 @@ export default function RootLayout({
       lang="en"
       className={`${oswald.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-warm-cream font-sans overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-warm-cream font-sans overflow-x-clip">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />

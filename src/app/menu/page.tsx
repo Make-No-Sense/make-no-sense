@@ -19,7 +19,7 @@ export default async function MenuPage() {
   const hasContent = categories.length > 0 && items.length > 0;
 
   return (
-    <div className="bg-warm-cream min-h-screen w-full overflow-x-hidden">
+    <div className="bg-warm-cream min-h-screen w-full">
       {/* Page heading */}
       <div className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl tracking-tight">
@@ -54,7 +54,7 @@ export default async function MenuPage() {
           if (categoryItems.length === 0) return null;
 
           return (
-            <section key={category._id} id={category.slug} className="scroll-mt-20 sm:scroll-mt-32">
+            <section key={category._id} id={category.slug} className="scroll-mt-32">
               {/* Category label */}
               <div className="flex items-center gap-4 mb-8">
                 <h2 className="font-display font-bold uppercase text-deep-navy text-3xl sm:text-4xl tracking-tight">

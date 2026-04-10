@@ -1,3 +1,5 @@
+import type { TruckEvent } from "./events";
+
 export interface CalendarEvent {
   id: string;
   summary: string;
@@ -5,6 +7,56 @@ export interface CalendarEvent {
   end: string;
   location?: string;
   description?: string;
+}
+
+// Strips internal prefixes like "MNS Lunch - " and returns the venue name
+function parseVenue(summary: string): string {
+  const idx = summary.indexOf(" - ");
+  return idx !== -1 ? summary.slice(idx + 3).trim() : summary.trim();
+}
+
+function isAllDay(iso: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(iso);
+}
+
+function formatDate(iso: string): string {
+  const date = new Date(isAllDay(iso) ? `${iso}T12:00:00` : iso);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    timeZone: "America/Chicago",
+  });
+}
+
+function formatTimeStr(iso: string): string {
+  return new Date(iso)
+    .toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "America/Chicago",
+    })
+    .replace(/:00(?=\s)/, "") // drop :00 from e.g. "11:00 AM" → "11 AM"
+    .toLowerCase();
+}
+
+function formatTime(start: string, end: string): string {
+  if (isAllDay(start)) return "All day";
+  const s = formatTimeStr(start);
+  const e = end ? formatTimeStr(end) : "";
+  return e ? `${s} – ${e}` : s;
+}
+
+export function normalizeCalendarEvents(events: CalendarEvent[]): TruckEvent[] {
+  return events.map((e) => ({
+    id: e.id,
+    title: parseVenue(e.summary),
+    date: formatDate(e.start),
+    time: formatTime(e.start, e.end),
+    address: e.location,
+    source: "calendar" as const,
+  }));
 }
 
 export async function getUpcomingEvents(
