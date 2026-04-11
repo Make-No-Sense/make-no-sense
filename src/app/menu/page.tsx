@@ -19,14 +19,14 @@ export default async function MenuPage() {
   const hasContent = categories.length > 0 && items.length > 0;
 
   return (
-    <div className="bg-warm-cream min-h-screen w-full">
+    <div className="bg-char-black min-h-screen w-full">
       {/* Page heading */}
-      <div className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl tracking-tight">
+      <div className="bg-mid-gray py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl tracking-tight">
           Our Menu
         </h1>
-        <div className="mx-auto mt-4 h-1 w-16 bg-brick-red rounded" />
-        <p className="mt-5 text-warm-cream/60 text-base max-w-md mx-auto">
+        <div className="mx-auto mt-4 h-1 w-16 bg-truck-red rounded" />
+        <p className="mt-5 text-light-gray text-base max-w-md mx-auto">
           Made fresh, served bold. Everything on this truck is made to be remembered.
         </p>
       </div>
@@ -40,7 +40,7 @@ export default async function MenuPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-16">
         {!hasContent && (
           <div className="py-24 text-center">
-            <p className="font-display uppercase text-deep-navy/30 text-2xl tracking-wider">
+            <p className="font-display uppercase text-off-white/30 text-2xl tracking-wider">
               Menu coming soon
             </p>
           </div>
@@ -57,11 +57,11 @@ export default async function MenuPage() {
             <section key={category._id} id={category.slug} className="scroll-mt-32">
               {/* Category label */}
               <div className="flex items-center gap-4 mb-8">
-                <h2 className="font-display font-bold uppercase text-deep-navy text-3xl sm:text-4xl tracking-tight">
+                <h2 className="font-display uppercase text-off-white text-3xl sm:text-4xl tracking-tight">
                   {category.name}
                 </h2>
-                <div className="flex-1 h-px bg-deep-navy/15" />
-                <span className="font-display text-xs uppercase tracking-widest text-slate">
+                <div className="flex-1 h-px bg-off-white/15" />
+                <span className="font-display text-xs uppercase tracking-widest text-light-gray">
                   {categoryItems.length} item{categoryItems.length !== 1 ? "s" : ""}
                 </span>
               </div>

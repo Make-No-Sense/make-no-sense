@@ -17,18 +17,18 @@ Live site: makenosense.info
 - Stripe (Phase 2 — not yet)
 
 ## Color Palette
-- Brick Red: #B83232 (CTAs, accents, prices)
-- Deep Navy: #1B3A5C (headers, structure)
-- Navy Black: #12202E (dark hero backgrounds)
-- Warm Cream: #FAF7F2 (light page backgrounds)
-- Pale Blue: #EAF0F7 (card backgrounds)
-- Muted Gold: #D4A853 (prices, decorative accents)
-- Soft Charcoal: #2E2E2E (body text)
-- Slate: #6B7280 (muted text)
+- Truck Red: #C41E1E (CTAs, accents, borders)
+- Flame Orange: #E8520A (hover states, secondary accents)
+- Neon Cyan: #00AEEF (eyebrows, labels, brand highlights)
+- Amber Gold: #F0A500 (prices, badges)
+- Char Black: #1A1A1A (page backgrounds, primary dark)
+- Mid Gray: #3A3A3A (card backgrounds, section alternates)
+- Off White: #F5F0E8 (body text, headings on dark)
+- Light Gray: #8A8A8A (muted/secondary text)
 
 ## Typography
-- Display: Oswald (bold, all-caps headings)
-- Body: Inter
+- Display: Fredoka (friendly bold headings — font-display class)
+- Body: DM Sans (clean readable body — font-sans class)
 - Mono/prices: Courier New
 
 ## File Structure

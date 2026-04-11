@@ -12,21 +12,19 @@ export const metadata = {
 export default async function GalleryPage() {
   const images = await client.fetch(galleryImagesQuery);
 
-
   return (
-    <div className="bg-warm-cream min-h-screen w-full overflow-x-hidden">
+    <div className="bg-char-black min-h-screen w-full">
       {/* Page header */}
-      <div className="bg-deep-navy py-16 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display font-bold uppercase text-warm-cream text-5xl sm:text-6xl tracking-tight">
+      <div className="bg-mid-gray py-16 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl tracking-tight">
           Gallery
         </h1>
-        <div className="mx-auto mt-4 h-1 w-16 bg-brick-red rounded" />
-        <p className="mt-5 text-warm-cream/60 text-base">
+        <div className="mx-auto mt-4 h-1 w-16 bg-truck-red rounded" />
+        <p className="mt-5 text-light-gray text-base">
           From the truck to the table.
         </p>
       </div>
 
-      {/* Grid + filters (client) */}
       <GalleryGrid images={images ?? []} />
     </div>
   );

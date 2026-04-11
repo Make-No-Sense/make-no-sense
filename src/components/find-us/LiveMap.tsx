@@ -10,8 +10,6 @@ interface LiveMapProps {
 
 export function LiveMap({ events, apiKey }: LiveMapProps) {
   const next = events[0] ?? null;
-
-  // Prefer address for accurate geocoding, fall back to venue name
   const mapQuery = next?.address || next?.title || null;
 
   let mapUrl: string;
@@ -19,12 +17,11 @@ export function LiveMap({ events, apiKey }: LiveMapProps) {
   if (mapQuery && apiKey) {
     mapUrl = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${encodeURIComponent(mapQuery)}&zoom=15`;
   } else if (apiKey) {
-    // No events — show Nashville overview
     mapUrl = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=Nashville,TN&zoom=11`;
   } else {
     return (
-      <div className="w-full bg-navy-black rounded-lg aspect-video flex items-center justify-center">
-        <p className="text-warm-cream/30 text-sm">API key required</p>
+      <div className="w-full bg-mid-gray rounded-lg aspect-video flex items-center justify-center">
+        <p className="text-light-gray text-sm">API key required</p>
       </div>
     );
   }
@@ -33,17 +30,17 @@ export function LiveMap({ events, apiKey }: LiveMapProps) {
     <div className="w-full">
       {/* Next stop overlay bar */}
       {next && (
-        <div className="bg-deep-navy px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3 sm:gap-4 rounded-t-lg overflow-hidden">
-          <Truck size={20} className="text-brick-red shrink-0 sm:size-6" />
+        <div className="bg-mid-gray px-4 sm:px-6 py-3 sm:py-4 flex items-center gap-3 sm:gap-4 rounded-t-lg overflow-hidden">
+          <Truck size={20} className="text-truck-red shrink-0 sm:size-6" />
           <div className="flex-1 min-w-0">
-            <p className="text-brick-red uppercase tracking-widest text-xs font-semibold">
+            <p className="text-truck-red uppercase tracking-widest text-xs font-semibold">
               Next Stop
             </p>
-            <p className="text-white font-display font-semibold uppercase tracking-tight text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
+            <p className="text-off-white font-display uppercase tracking-tight text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
               {next.title}
             </p>
           </div>
-          <p className="text-white/60 text-xs sm:text-sm font-semibold shrink-0">
+          <p className="text-light-gray text-xs sm:text-sm shrink-0">
             {next.date}
           </p>
         </div>
@@ -69,7 +66,7 @@ export function LiveMap({ events, apiKey }: LiveMapProps) {
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 px-5 sm:px-6 py-3 min-h-[44px] bg-deep-navy text-white font-display font-semibold uppercase tracking-wider text-xs sm:text-sm rounded hover:bg-brick-red transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 px-5 sm:px-6 py-3 min-h-[44px] bg-truck-red text-off-white font-display uppercase tracking-wider text-xs sm:text-sm rounded hover:bg-flame-orange transition-colors w-full sm:w-auto"
           >
             <MapPin size={18} />
             <span>Google Maps</span>
@@ -78,7 +75,7 @@ export function LiveMap({ events, apiKey }: LiveMapProps) {
             href={`https://maps.apple.com/?q=${encodeURIComponent(mapQuery)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 px-5 sm:px-6 py-3 min-h-[44px] bg-warm-cream text-deep-navy border-2 border-deep-navy font-display font-semibold uppercase tracking-wider text-xs sm:text-sm rounded hover:bg-pale-blue transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 px-5 sm:px-6 py-3 min-h-[44px] bg-mid-gray text-off-white border border-off-white/20 font-display uppercase tracking-wider text-xs sm:text-sm rounded hover:border-off-white/50 transition-colors w-full sm:w-auto"
           >
             <MapPin size={18} />
             <span>Apple Maps</span>

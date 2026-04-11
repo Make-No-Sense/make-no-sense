@@ -15,7 +15,7 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (isScrolling.current) return; // ignore during programmatic scroll
+        if (isScrolling.current) return;
         for (const entry of entries) {
           if (entry.isIntersecting) {
             setActive(entry.target.id);
@@ -51,7 +51,6 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
     if ("onscrollend" in window) {
       window.addEventListener("scrollend", done, { once: true });
     } else {
-      // Fallback for older Safari — generous timeout to cover long-distance scrolls
       setTimeout(done, 1500);
     }
   }
@@ -59,7 +58,7 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
   return (
     <div
       ref={barRef}
-      className="sticky top-16 z-40 bg-warm-cream/95 backdrop-blur-sm border-b border-deep-navy/10 overflow-x-auto"
+      className="sticky top-16 z-40 bg-char-black/95 backdrop-blur-sm border-b border-off-white/10 overflow-x-auto"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex gap-1 py-3 min-w-max sm:min-w-0 sm:flex-wrap">
@@ -71,8 +70,8 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
               className={`
                 px-4 py-2 font-display text-sm uppercase tracking-wider rounded transition-colors whitespace-nowrap cursor-pointer
                 ${active === slug
-                  ? "bg-deep-navy text-warm-cream"
-                  : "text-soft-charcoal hover:bg-pale-blue"
+                  ? "bg-char-black text-off-white"
+                  : "text-light-gray hover:bg-mid-gray"
                 }
               `}
             >

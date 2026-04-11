@@ -15,13 +15,13 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-deep-navy sticky top-0 z-50">
+    <header className="bg-char-black sticky top-0 z-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="font-display text-xl font-bold uppercase tracking-widest text-warm-cream hover:text-muted-gold transition-colors"
+            className="font-display text-xl uppercase tracking-widest text-truck-red hover:text-off-white transition-colors"
           >
             Make No Sense
           </Link>
@@ -32,14 +32,14 @@ export function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className="font-display text-sm uppercase tracking-wider text-warm-cream/80 hover:text-warm-cream transition-colors"
+                className="font-display text-sm uppercase tracking-wider text-off-white/80 hover:text-off-white transition-colors"
               >
                 {label}
               </Link>
             ))}
             <Link
               href="/menu"
-              className="bg-brick-red px-5 py-2 font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brick-red/90 transition-colors rounded"
+              className="bg-truck-red px-5 py-2 font-display text-sm uppercase tracking-wider text-off-white hover:bg-flame-orange transition-colors rounded"
             >
               Order Now
             </Link>
@@ -48,7 +48,7 @@ export function Navbar() {
           {/* Mobile toggle */}
           <button
             type="button"
-            className="md:hidden text-warm-cream p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
+            className="md:hidden text-off-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -57,9 +57,9 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu - OUTSIDE max-w-7xl container */}
+      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-navy-black border-t border-white/10 w-full">
+        <div className="md:hidden bg-mid-gray border-t border-off-white/10 w-full">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <nav className="flex flex-col py-4 gap-1">
               {navLinks.map(({ href, label }) => (
@@ -67,7 +67,7 @@ export function Navbar() {
                   key={href}
                   href={href}
                   onClick={() => setOpen(false)}
-                  className="font-display text-sm uppercase tracking-wider text-warm-cream/80 hover:text-warm-cream py-3 px-2 border-b border-white/5 transition-colors min-h-[44px] flex items-center"
+                  className="font-display text-sm uppercase tracking-wider text-off-white/80 hover:text-off-white py-3 px-2 border-b border-off-white/5 transition-colors min-h-[44px] flex items-center"
                 >
                   {label}
                 </Link>
@@ -75,7 +75,7 @@ export function Navbar() {
               <Link
                 href="/menu"
                 onClick={() => setOpen(false)}
-                className="mt-3 bg-brick-red px-5 py-3 text-center font-display text-sm font-semibold uppercase tracking-wider text-white hover:bg-brick-red/90 transition-colors rounded min-h-[44px] flex items-center justify-center"
+                className="mt-3 bg-truck-red px-5 py-3 text-center font-display text-sm uppercase tracking-wider text-off-white hover:bg-flame-orange transition-colors rounded min-h-[44px] flex items-center justify-center"
               >
                 Order Now
               </Link>

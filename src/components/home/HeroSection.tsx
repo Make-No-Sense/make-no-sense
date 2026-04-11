@@ -7,7 +7,7 @@ interface Props {
 
 export function HeroSection({ headline, subheadline }: Props) {
   return (
-    <section className="relative min-h-screen bg-navy-black flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen bg-char-black flex items-center justify-center overflow-hidden">
       {/* Grain texture overlay */}
       <div
         className="absolute inset-0 opacity-20"
@@ -19,20 +19,20 @@ export function HeroSection({ headline, subheadline }: Props) {
       />
 
       {/* Gradient vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-navy-black/60 via-transparent to-navy-black/80" />
+      <div className="absolute inset-0 bg-gradient-to-b from-char-black/60 via-transparent to-char-black/80" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-        <p className="font-display text-brick-red uppercase tracking-[0.3em] text-sm sm:text-base mb-6">
+        <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm sm:text-base mb-6">
           Nashville Food Truck
         </p>
 
-        <h1 className="font-display font-bold uppercase text-warm-cream leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6">
+        <h1 className="font-display uppercase text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6">
           {headline ?? 'Make No\u00A0Sense'}
         </h1>
 
         {subheadline && (
-          <p className="text-warm-cream/70 text-lg sm:text-xl max-w-xl mx-auto mb-10 leading-relaxed">
+          <p className="text-off-white/70 text-lg sm:text-xl max-w-xl mx-auto mb-10 leading-relaxed">
             {subheadline}
           </p>
         )}
@@ -40,23 +40,29 @@ export function HeroSection({ headline, subheadline }: Props) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/menu"
-            className="inline-flex items-center justify-center px-8 py-4 font-display font-semibold uppercase tracking-wider text-sm border-2 border-warm-cream text-warm-cream hover:bg-warm-cream hover:text-navy-black transition-colors rounded"
+            className="inline-flex items-center justify-center px-8 py-4 font-display uppercase tracking-wider text-sm border-2 border-off-white text-off-white hover:bg-off-white hover:text-char-black transition-colors rounded"
           >
             See the Menu
           </Link>
           <Link
             href="/find-us"
-            className="inline-flex items-center justify-center px-8 py-4 font-display font-semibold uppercase tracking-wider text-sm bg-brick-red text-white hover:bg-brick-red/90 transition-colors rounded"
+            className="inline-flex items-center justify-center px-8 py-4 font-display uppercase tracking-wider text-sm bg-truck-red text-off-white hover:bg-flame-orange transition-colors rounded"
           >
             Find the Truck
           </Link>
         </div>
+
+        {/* Scroll nudge — inline on mobile, hidden on sm+ (absolute version takes over) */}
+        <div className="flex sm:hidden flex-col items-center gap-2 text-off-white/40 mt-10">
+          <span className="font-display text-xs uppercase tracking-widest">Scroll</span>
+          <div className="w-px h-8 bg-off-white/30" />
+        </div>
       </div>
 
-      {/* Scroll nudge */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-warm-cream/40">
+      {/* Scroll nudge — absolute on sm+ only */}
+      <div className="hidden sm:flex absolute bottom-14 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-off-white/40">
         <span className="font-display text-xs uppercase tracking-widest">Scroll</span>
-        <div className="w-px h-8 bg-warm-cream/30" />
+        <div className="w-px h-8 bg-off-white/30" />
       </div>
     </section>
   )

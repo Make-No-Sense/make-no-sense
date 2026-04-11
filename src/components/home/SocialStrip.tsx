@@ -42,13 +42,13 @@ export function SocialStrip({ instagramUrl, tiktokUrl, facebookUrl }: Props) {
   ].filter((s) => s.url)
 
   return (
-    <section className="bg-deep-navy py-14 px-4 sm:px-6 lg:px-8">
+    <section className="bg-char-black py-14 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl flex flex-col items-center gap-8">
         <div className="text-center">
-          <p className="font-display font-bold uppercase text-warm-cream text-2xl sm:text-3xl tracking-tight">
+          <p className="font-display uppercase text-off-white text-2xl sm:text-3xl tracking-tight">
             Follow the Truck
           </p>
-          <p className="text-slate text-sm mt-2">
+          <p className="text-light-gray text-sm mt-2">
             Real-time locations, new dishes, and behind-the-scenes.
           </p>
         </div>
@@ -62,9 +62,9 @@ export function SocialStrip({ instagramUrl, tiktokUrl, facebookUrl }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={SOCIAL_LABEL[key]}
-                className="flex flex-col items-center gap-2 text-warm-cream/60 hover:text-warm-cream transition-colors group"
+                className="flex flex-col items-center gap-2 text-off-white/60 hover:text-truck-red transition-colors group"
               >
-                <span className="p-3 rounded-full border border-warm-cream/20 group-hover:border-warm-cream/60 group-hover:bg-warm-cream/5 transition-colors">
+                <span className="p-3 rounded-full border border-off-white/20 group-hover:border-truck-red/60 group-hover:bg-truck-red/5 transition-colors">
                   <Icon />
                 </span>
                 <span className="font-display text-xs uppercase tracking-widest">
@@ -82,9 +82,9 @@ export function SocialStrip({ instagramUrl, tiktokUrl, facebookUrl }: Props) {
             ].map(({ key, Icon }) => (
               <div
                 key={key}
-                className="flex flex-col items-center gap-2 text-warm-cream/30"
+                className="flex flex-col items-center gap-2 text-off-white/30"
               >
-                <span className="p-3 rounded-full border border-warm-cream/10">
+                <span className="p-3 rounded-full border border-off-white/10">
                   <Icon />
                 </span>
                 <span className="font-display text-xs uppercase tracking-widest">

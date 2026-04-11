@@ -11,16 +11,16 @@ interface MenuItem {
 }
 
 const BADGE_STYLES: Record<string, string> = {
-  New: "bg-brick-red text-white",
-  "Fan Favorite": "bg-muted-gold text-navy-black",
-  Limited: "bg-deep-navy text-warm-cream",
+  New: "bg-flame-orange text-off-white",
+  "Fan Favorite": "bg-truck-red text-off-white",
+  Limited: "bg-mid-gray text-off-white border border-off-white/20",
 };
 
 export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: boolean }) {
   return (
-    <div className="bg-pale-blue rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-mid-gray rounded-lg overflow-hidden flex flex-col h-full">
       {/* Image */}
-      <div className="relative aspect-video bg-deep-navy/10">
+      <div className="relative aspect-video bg-char-black/40">
         {item.image?.asset?._ref ? (
           <Image
             src={urlFor(item.image).width(500).height(350).url()}
@@ -32,7 +32,7 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-display text-deep-navy/20 text-4xl uppercase tracking-widest">
+            <span className="font-display text-off-white/20 text-4xl uppercase tracking-widest">
               MNS
             </span>
           </div>
@@ -40,7 +40,7 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
 
         {item.badge && (
           <span
-            className={`absolute top-3 left-3 px-2 py-1 font-display text-xs uppercase tracking-wider rounded ${BADGE_STYLES[item.badge] ?? "bg-slate text-white"}`}
+            className={`absolute top-3 left-3 px-2 py-1 font-display text-xs uppercase tracking-wider rounded ${BADGE_STYLES[item.badge] ?? "bg-light-gray text-off-white"}`}
           >
             {item.badge}
           </span>
@@ -50,18 +50,18 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
       {/* Body */}
       <div className="p-5 flex flex-col flex-1 gap-2">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display font-semibold uppercase text-deep-navy text-base leading-tight">
+          <h3 className="font-display uppercase text-off-white text-base leading-tight">
             {item.name}
           </h3>
           {item.price != null && item.price > 0 && (
-            <span className="font-mono text-muted-gold font-bold text-base shrink-0">
+            <span className="font-mono text-amber-gold font-bold text-base shrink-0">
               ${item.price.toFixed(2)}
             </span>
           )}
         </div>
 
         {item.description && (
-          <p className="text-slate text-sm leading-relaxed">{item.description}</p>
+          <p className="text-light-gray text-sm leading-relaxed">{item.description}</p>
         )}
       </div>
     </div>

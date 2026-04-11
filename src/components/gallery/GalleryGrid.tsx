@@ -17,7 +17,6 @@ export interface GalleryImage {
 const TABS = ["All", "Food", "Truck", "Events"] as const;
 type Tab = (typeof TABS)[number];
 
-// ── Single image tile with per-image error boundary ──────────────────────────
 function GalleryTile({
   image,
   onClick,
@@ -35,7 +34,7 @@ function GalleryTile({
   return (
     <button
       onClick={onClick}
-      className="group relative aspect-square w-full overflow-hidden rounded-lg bg-pale-blue focus:outline-none focus-visible:ring-2 focus-visible:ring-brick-red"
+      className="group relative aspect-square w-full overflow-hidden rounded-lg bg-mid-gray focus:outline-none focus-visible:ring-2 focus-visible:ring-truck-red"
       aria-label={image.image?.alt ?? image.caption ?? "Gallery image"}
     >
       {src ? (
@@ -48,9 +47,8 @@ function GalleryTile({
           onError={() => setErrored(true)}
         />
       ) : (
-        // MNS placeholder — shown when no image asset or after load error
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-display text-deep-navy/20 text-5xl uppercase tracking-widest">
+          <span className="font-display text-off-white/20 text-5xl uppercase tracking-widest">
             MNS
           </span>
         </div>
@@ -58,15 +56,15 @@ function GalleryTile({
 
       {/* Category badge */}
       {image.category && (
-        <span className="absolute top-3 right-3 px-2 py-1 font-display text-xs uppercase tracking-wider bg-deep-navy/80 text-warm-cream rounded backdrop-blur-sm">
+        <span className="absolute top-3 right-3 px-2 py-1 font-display text-xs uppercase tracking-wider bg-char-black/80 text-off-white rounded backdrop-blur-sm">
           {image.category}
         </span>
       )}
 
       {/* Caption hover overlay */}
       {image.caption && (
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-navy-black/80 backdrop-blur-sm p-3">
-          <p className="text-warm-cream text-sm leading-snug line-clamp-2">
+        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-char-black/80 backdrop-blur-sm p-3">
+          <p className="text-off-white text-sm leading-snug line-clamp-2">
             {image.caption}
           </p>
         </div>
@@ -75,7 +73,6 @@ function GalleryTile({
   );
 }
 
-// ── Lightbox ─────────────────────────────────────────────────────────────────
 function Lightbox({
   image,
   onClose,
@@ -104,25 +101,22 @@ function Lightbox({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-navy-black/95 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-char-black/95 backdrop-blur-sm p-4"
       onClick={onClose}
     >
-      {/* Inner panel — stop propagation so clicking image doesn't close */}
       <div
         className="relative max-w-5xl w-full max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute -top-10 right-0 text-warm-cream/70 hover:text-warm-cream transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="absolute -top-10 right-0 text-off-white/70 hover:text-off-white transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Close lightbox"
         >
           <X size={28} />
         </button>
 
-        {/* Image */}
-        <div className="relative w-full flex-1 min-h-[50vh] max-h-[80vh] rounded-lg overflow-hidden bg-deep-navy/40">
+        <div className="relative w-full flex-1 min-h-[50vh] max-h-[80vh] rounded-lg overflow-hidden bg-mid-gray/40">
           {src ? (
             <Image
               src={src}
@@ -135,16 +129,15 @@ function Lightbox({
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-display text-warm-cream/20 text-6xl uppercase tracking-widest">
+              <span className="font-display text-off-white/20 text-6xl uppercase tracking-widest">
                 MNS
               </span>
             </div>
           )}
         </div>
 
-        {/* Caption */}
         {image.caption && (
-          <p className="mt-3 text-warm-cream/80 text-sm text-center leading-relaxed">
+          <p className="mt-3 text-off-white/80 text-sm text-center leading-relaxed">
             {image.caption}
           </p>
         )}
@@ -153,18 +146,16 @@ function Lightbox({
   );
 }
 
-// ── Empty state ───────────────────────────────────────────────────────────────
 function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center py-32 px-4 text-center">
-      {/* Camera icon */}
-      <div className="mb-6 p-5 rounded-full bg-pale-blue">
+      <div className="mb-6 p-5 rounded-full bg-mid-gray">
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth={1.5}
-          className="w-12 h-12 text-deep-navy/40"
+          className="w-12 h-12 text-off-white/40"
           aria-hidden
         >
           <path
@@ -179,15 +170,15 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <h2 className="font-display font-bold uppercase text-deep-navy text-3xl tracking-tight mb-3">
+      <h2 className="font-display uppercase text-off-white text-3xl tracking-tight mb-3">
         Photos Coming Soon
       </h2>
-      <p className="text-slate text-base max-w-sm mb-8 leading-relaxed">
+      <p className="text-light-gray text-base max-w-sm mb-8 leading-relaxed">
         Check back soon — we're loading up the gallery.
       </p>
       <Link
         href="/menu"
-        className="inline-flex items-center justify-center px-7 py-3 font-display font-semibold uppercase tracking-wider text-sm bg-brick-red text-white hover:bg-brick-red/90 transition-colors rounded"
+        className="inline-flex items-center justify-center px-7 py-3 font-display uppercase tracking-wider text-sm bg-truck-red text-off-white hover:bg-flame-orange transition-colors rounded"
       >
         See the Menu
       </Link>
@@ -195,7 +186,6 @@ function EmptyState() {
   );
 }
 
-// ── Main export ───────────────────────────────────────────────────────────────
 export function GalleryGrid({ images }: { images: GalleryImage[] }) {
   const [activeTab, setActiveTab] = useState<Tab>("All");
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
@@ -212,7 +202,7 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
       ) : (
         <>
           {/* Filter tabs */}
-          <div className="sticky top-16 z-40 bg-warm-cream/95 backdrop-blur-sm border-b border-deep-navy/10">
+          <div className="sticky top-16 z-40 bg-char-black/95 backdrop-blur-sm border-b border-off-white/10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex gap-1 py-3 overflow-x-auto">
                 {TABS.map((tab) => {
@@ -227,12 +217,12 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
                       onClick={() => setActiveTab(tab)}
                       className={`
                         flex items-center gap-1.5 px-4 py-2 font-display text-xs uppercase tracking-wider rounded transition-colors whitespace-nowrap
-                        ${activeTab === tab ? "bg-deep-navy text-warm-cream" : "text-soft-charcoal hover:bg-pale-blue"}
+                        ${activeTab === tab ? "bg-char-black text-off-white" : "text-light-gray hover:bg-mid-gray"}
                       `}
                     >
                       {tab}
                       <span
-                        className={`text-[10px] ${activeTab === tab ? "text-warm-cream/60" : "text-slate"}`}
+                        className={`text-[10px] ${activeTab === tab ? "text-off-white/60" : "text-light-gray"}`}
                       >
                         {count}
                       </span>
@@ -246,7 +236,7 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
           {/* Grid */}
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
             {filtered.length === 0 ? (
-              <p className="py-24 text-center font-display uppercase text-deep-navy/30 tracking-wider text-xl">
+              <p className="py-24 text-center font-display uppercase text-off-white/30 tracking-wider text-xl">
                 No {activeTab.toLowerCase()} photos yet
               </p>
             ) : (
@@ -264,7 +254,6 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
         </>
       )}
 
-      {/* Lightbox */}
       {lightboxImage && (
         <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
       )}

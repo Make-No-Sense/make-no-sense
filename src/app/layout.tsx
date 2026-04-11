@@ -1,19 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Oswald, Inter } from "next/font/google";
+import { Fredoka, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+const fredoka = Fredoka({
+  weight: "400",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-fredoka",
+  display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const dmSans = DM_Sans({
   subsets: ["latin"],
+  variable: "--font-dmsans",
+  display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "Make No Sense | Nashville Food Truck",
@@ -28,9 +35,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${inter.variable} h-full antialiased`}
+      className={`${fredoka.variable} ${dmSans.variable} h-full antialiased overflow-x-hidden`}
     >
-      <body className="min-h-full flex flex-col bg-warm-cream font-sans overflow-x-clip">
+      <body className="min-h-full flex flex-col bg-char-black font-sans">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
