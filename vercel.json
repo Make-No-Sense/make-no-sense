@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sff-check",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
