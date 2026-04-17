@@ -1,40 +1,111 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Make No Sense 🚚
+
+> Nashville's boldest food truck. Unforgettable flavors, zero apologies.
+
+Official website for **Make No Sense**, a Nashville-based food truck business. Built as a full-stack web application with a headless CMS, live event scheduling, and a contact form.
+
+🔗 **Live site:** [make-no-sense.vercel.app](https://make-no-sense.vercel.app)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14+ (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| CMS | Sanity.io |
+| Hosting | Vercel |
+| Email | Resend |
+| Maps | Google Maps Embed API |
+| Events | Google Calendar API |
+
+---
+
+## Pages
+
+- `/` — Homepage with hero section and truck intro
+- `/menu` — Full menu managed via Sanity CMS
+- `/find-us` — Live event schedule via Google Calendar + map embed
+- `/gallery` — Photo gallery managed via Sanity CMS
+- `/about` — Brand story and team
+- `/contact` — Contact form powered by Resend
+- `/studio` — Sanity Studio (CMS dashboard)
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Sanity account
+- Google Cloud project (for Calendar + Maps APIs)
+- Resend account
+
+### Installation
+
+```bash
+git clone https://github.com/Jadjei21/makenosense.git
+cd makenosense
+npm install
+```
+
+### Environment Variables
+
+Create a `.env.local` file in the root with the following:
+
+```env
+# Sanity
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+
+# Google
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_maps_key
+GOOGLE_CALENDAR_ID=your_calendar_id
+GOOGLE_API_KEY=your_api_key
+
+# Resend
+RESEND_API_KEY=your_resend_key
+```
+
+### Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## CMS
 
-## Learn More
+Content is managed through Sanity Studio at `/studio`. The following content types are available:
 
-To learn more about Next.js, take a look at the following resources:
+- **Menu items** — name, description, price, category, image
+- **Gallery images** — photos with captions
+- **Site settings** — truck image, social links, contact info
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Design
 
-## Deploy on Vercel
+- **Color palette:** Dark-first, truck-red primary accent, neon-cyan reserved for the Find Us page
+- **Typography:** Fredoka One (headings), DM Sans (body)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# make-no-sense
->>>>>>> 670fe2675fbc35500d20892b280db313801296d7
+## Deployment
+
+The site is deployed on **Vercel** with automatic deployments on push to `main`.
+
+DNS is managed through **GoDaddy** pointing to Vercel.
+
+---
+
+## Contact
+
+**Developer:** [Lanski](https://github.com/mayaajike)
