@@ -1,5 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Leaf, Users, Star } from "lucide-react";
+import { client } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
+import { aboutPageQuery } from "@/sanity/lib/queries";
 
 export const metadata = {
   title: "About | Make No Sense",
@@ -25,7 +29,10 @@ const PILLARS = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const data = await client.fetch(aboutPageQuery);
+  const truckImage = data?.truckImage;
+
   return (
     <div className="flex flex-col w-full">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
@@ -119,10 +126,22 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="aspect-[4/3] rounded-lg bg-mid-gray flex items-center justify-center overflow-hidden">
-            <span className="font-display uppercase text-off-white/15 text-6xl sm:text-7xl tracking-widest select-none">
-              MNS
-            </span>
+          <div className="aspect-[4/3] rounded-lg bg-mid-gray overflow-hidden relative">
+            {truckImage?.asset ? (
+              <Image
+                src={urlFor(truckImage).width(900).height(675).fit("crop").url()}
+                alt={truckImage.alt ?? "The Make No Sense food truck"}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-full h-full">
+                <span className="font-display uppercase text-off-white/15 text-6xl sm:text-7xl tracking-widest select-none">
+                  MNS
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </section>

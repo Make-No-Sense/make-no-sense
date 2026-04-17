@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -21,13 +22,20 @@ export function Navbar() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-display text-xl uppercase tracking-widest text-truck-red hover:text-off-white transition-colors"
+            className="flex items-center gap-3 font-display text-xl uppercase tracking-widest text-truck-red hover:text-off-white transition-colors"
           >
+            <Image
+              src="/MNS_logo_3.jpg"
+              alt="Make No Sense logo"
+              width={42}
+              height={42}
+              className="rounded-full object-cover"
+            />
             Make No Sense
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-10">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}

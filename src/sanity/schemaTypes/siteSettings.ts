@@ -45,6 +45,19 @@ export const siteSettings = defineType({
       title: 'Google Calendar ID',
       type: 'string',
     }),
+    defineField({
+      name: 'truckImage',
+      title: 'Truck Image',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt Text',
+          type: 'string',
+        })
+      ]
+    }),
   ],
   // Prevent creating more than one siteSettings document
   __experimental_actions: ['update', 'publish'],

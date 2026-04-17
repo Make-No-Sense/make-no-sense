@@ -74,3 +74,15 @@ export const featuredMenuItemsQuery = defineQuery(`
     "category": category->name
   }
 `)
+
+export const aboutPageQuery = defineQuery(`
+  *[_type == "siteSettings"][0] {
+    truckImage {
+      asset {
+        _ref,
+        _type
+      },
+      alt
+    }
+  }
+`)
