@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getSFFEvents, normalizeSFFEvents } from "@/lib/sff";
 import { getUpcomingEvents, normalizeCalendarEvents } from "@/lib/calendar";
 import { EventsGrid } from "@/components/find-us/EventsGrid";
@@ -14,10 +15,24 @@ const EVENT_SOURCE: "sff" | "calendar" = "calendar";
 
 export const revalidate = 3600;
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Find Us | Make No Sense",
   description:
-    "Find Make No Sense food truck in Nashville. Map, upcoming locations, and event schedule.",
+    "Track down the Make No Sense food truck in Nashville. Live map, upcoming stops, and full event schedule updated weekly.",
+  openGraph: {
+    title: "Find Us | Make No Sense",
+    description:
+      "Track down the Make No Sense food truck in Nashville. Live map, upcoming stops, and full event schedule updated weekly.",
+    type: "website",
+    url: "https://makenosense.info/find-us",
+    siteName: "Make No Sense",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Find Us | Make No Sense",
+    description:
+      "Track down the Make No Sense food truck in Nashville. Live map, upcoming stops, and full event schedule updated weekly.",
+  },
 };
 
 async function getCalendarEvents(): Promise<TruckEvent[]> {

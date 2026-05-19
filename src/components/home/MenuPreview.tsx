@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { urlFor } from '@/sanity/lib/image'
+import { urlForOptimized } from '@/sanity/lib/image'
 
 interface MenuItem {
   _id: string
@@ -43,7 +43,7 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
                 <div className="relative h-56 bg-char-black/60">
                   {item.image?.asset?._ref ? (
                     <Image
-                      src={urlFor(item.image).width(600).height(450).url()}
+                      src={urlForOptimized(item.image).width(600).height(450).url()}
                       alt={item.image.alt ?? item.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"

@@ -1,14 +1,29 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Leaf, Users, Star } from "lucide-react";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
+import { urlForOptimized } from "@/sanity/lib/image";
 import { aboutPageQuery } from "@/sanity/lib/queries";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "About | Make No Sense",
   description:
-    "Family-run. Nashville-made. No compromises. Learn the story behind Make No Sense food truck.",
+    "Family-run. Nashville-made. No compromises. Learn the story behind Make No Sense food truck and why we do what we do.",
+  openGraph: {
+    title: "About | Make No Sense",
+    description:
+      "Family-run. Nashville-made. No compromises. Learn the story behind Make No Sense food truck and why we do what we do.",
+    type: "website",
+    url: "https://makenosense.info/about",
+    siteName: "Make No Sense",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About | Make No Sense",
+    description:
+      "Family-run. Nashville-made. No compromises. Learn the story behind Make No Sense food truck and why we do what we do.",
+  },
 };
 
 const PILLARS = [
@@ -129,7 +144,7 @@ export default async function AboutPage() {
           <div className="aspect-[4/3] rounded-lg bg-mid-gray overflow-hidden relative">
             {truckImage?.asset ? (
               <Image
-                src={urlFor(truckImage).width(900).height(675).fit("crop").url()}
+                src={urlForOptimized(truckImage).width(900).height(675).url()}
                 alt={truckImage.alt ?? "The Make No Sense food truck"}
                 fill
                 className="object-cover"

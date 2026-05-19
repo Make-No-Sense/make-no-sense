@@ -1,14 +1,12 @@
 import Link from 'next/link'
 import { MapPin, Clock, Calendar } from 'lucide-react'
+import type { TruckEvent } from '@/lib/events'
 
-const PLACEHOLDER_EVENT = {
-  title: 'Downtown Nashville — Midday Rush',
-  date: 'Check back soon for live dates',
-  time: '11:00 AM – 3:00 PM',
-  location: 'Bicentennial Capitol Mall State Park',
+interface NextEventTeaserProps {
+  event: TruckEvent | null
 }
 
-export function NextEventTeaser() {
+export function NextEventTeaser({ event }: NextEventTeaserProps) {
   return (
     <section className="bg-mid-gray py-20 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl">
@@ -22,26 +20,36 @@ export function NextEventTeaser() {
         </div>
 
         <div className="bg-char-black rounded-lg overflow-hidden border border-off-white/10">
-          <div className="border-l-4 border-truck-red p-8 sm:p-10">
-            <h3 className="font-display uppercase text-off-white text-2xl sm:text-3xl mb-6 leading-tight">
-              {PLACEHOLDER_EVENT.title}
-            </h3>
+          {event ? (
+            <div className="border-l-4 border-truck-red p-8 sm:p-10">
+              <h3 className="font-display uppercase text-off-white text-2xl sm:text-3xl mb-6 leading-tight">
+                {event.title}
+              </h3>
 
-            <ul className="flex flex-col gap-4">
-              <li className="flex items-center gap-3 text-off-white">
-                <Calendar size={18} className="text-truck-red shrink-0" />
-                <span className="font-sans text-base">{PLACEHOLDER_EVENT.date}</span>
-              </li>
-              <li className="flex items-center gap-3 text-off-white">
-                <Clock size={18} className="text-truck-red shrink-0" />
-                <span className="font-sans text-base">{PLACEHOLDER_EVENT.time}</span>
-              </li>
-              <li className="flex items-center gap-3 text-off-white">
-                <MapPin size={18} className="text-truck-red shrink-0" />
-                <span className="font-sans text-base">{PLACEHOLDER_EVENT.location}</span>
-              </li>
-            </ul>
-          </div>
+              <ul className="flex flex-col gap-4">
+                <li className="flex items-center gap-3 text-off-white">
+                  <Calendar size={18} className="text-truck-red shrink-0" />
+                  <span className="font-sans text-base">{event.date}</span>
+                </li>
+                <li className="flex items-center gap-3 text-off-white">
+                  <Clock size={18} className="text-truck-red shrink-0" />
+                  <span className="font-sans text-base">{event.time}</span>
+                </li>
+                {event.address && (
+                  <li className="flex items-center gap-3 text-off-white">
+                    <MapPin size={18} className="text-truck-red shrink-0" />
+                    <span className="font-sans text-base">{event.address}</span>
+                  </li>
+                )}
+              </ul>
+            </div>
+          ) : (
+            <div className="border-l-4 border-truck-red p-8 sm:p-10">
+              <p className="font-sans text-light-gray text-base">
+                No upcoming events scheduled — check back soon.
+              </p>
+            </div>
+          )}
 
           <div className="bg-mid-gray px-8 sm:px-10 py-5 border-t border-off-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-light-gray text-sm">

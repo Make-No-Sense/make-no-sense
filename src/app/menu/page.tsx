@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { menuCategoriesQuery, menuItemsByCategoryQuery } from "@/sanity/lib/queries";
 import { CategoryFilter } from "@/components/menu/CategoryFilter";
@@ -5,9 +6,24 @@ import { MenuItemCard } from "@/components/menu/MenuItemCard";
 
 export const revalidate = 60;
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Menu | Make No Sense",
-  description: "Browse the full Make No Sense menu — bold flavors, Nashville-made.",
+  description:
+    "Bold burgers, seasoned fries, and scratch-made sauces. Browse the full Make No Sense food truck menu — Nashville's favorite.",
+  openGraph: {
+    title: "Menu | Make No Sense",
+    description:
+      "Bold burgers, seasoned fries, and scratch-made sauces. Browse the full Make No Sense food truck menu — Nashville's favorite.",
+    type: "website",
+    url: "https://makenosense.info/menu",
+    siteName: "Make No Sense",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Menu | Make No Sense",
+    description:
+      "Bold burgers, seasoned fries, and scratch-made sauces. Browse the full Make No Sense food truck menu — Nashville's favorite.",
+  },
 };
 
 export default async function MenuPage() {

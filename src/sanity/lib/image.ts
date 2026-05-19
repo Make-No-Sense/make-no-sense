@@ -3,9 +3,12 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 import { dataset, projectId } from '../env'
 
-// https://www.sanity.io/docs/image-url
 const builder = createImageUrlBuilder({ projectId, dataset })
 
 export const urlFor = (source: SanityImageSource) => {
   return builder.image(source)
+}
+
+export const urlForOptimized = (source: SanityImageSource) => {
+  return builder.image(source).quality(90).sharpen(20).format('webp').fit('crop')
 }

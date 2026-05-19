@@ -1,12 +1,28 @@
+import type { Metadata } from "next";
 import { client } from "@/sanity/lib/client";
 import { galleryImagesQuery } from "@/sanity/lib/queries";
 import { GalleryGrid } from "@/components/gallery/GalleryGrid";
 
 export const revalidate = 60;
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Gallery | Make No Sense",
-  description: "Photos from the truck, the food, and the people — Make No Sense Nashville.",
+  description:
+    "Photos from the Make No Sense food truck — the food, the truck, and the Nashville community that makes it worth it.",
+  openGraph: {
+    title: "Gallery | Make No Sense",
+    description:
+      "Photos from the Make No Sense food truck — the food, the truck, and the Nashville community that makes it worth it.",
+    type: "website",
+    url: "https://makenosense.info/gallery",
+    siteName: "Make No Sense",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gallery | Make No Sense",
+    description:
+      "Photos from the Make No Sense food truck — the food, the truck, and the Nashville community that makes it worth it.",
+  },
 };
 
 export default async function GalleryPage() {

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { urlFor } from "@/sanity/lib/image";
+import { urlForOptimized } from "@/sanity/lib/image";
 
 export interface GalleryImage {
   _id: string;
@@ -28,7 +28,7 @@ function GalleryTile({
 
   const src =
     !errored && image.image?.asset?._ref
-      ? urlFor(image.image).width(800).height(800).fit("crop").url()
+      ? urlForOptimized(image.image).width(800).height(800).url()
       : null;
 
   return (
@@ -84,7 +84,7 @@ function Lightbox({
 
   const src =
     !errored && image.image?.asset?._ref
-      ? urlFor(image.image).width(1600).url()
+      ? urlForOptimized(image.image).width(1600).url()
       : null;
 
   useEffect(() => {

@@ -46,10 +46,10 @@ export function Navbar() {
               </Link>
             ))}
             <Link
-              href="/menu"
+              href="/contact"
               className="bg-truck-red px-5 py-2 font-display text-sm uppercase tracking-wider text-off-white hover:bg-flame-orange transition-colors rounded"
             >
-              Order Now
+              Contact Us
             </Link>
           </nav>
 
@@ -81,11 +81,11 @@ export function Navbar() {
                 </Link>
               ))}
               <Link
-                href="/menu"
+                href="/contact"
                 onClick={() => setOpen(false)}
                 className="mt-3 bg-truck-red px-5 py-3 text-center font-display text-sm uppercase tracking-wider text-off-white hover:bg-flame-orange transition-colors rounded min-h-[44px] flex items-center justify-center"
               >
-                Order Now
+                Contact Us
               </Link>
             </nav>
           </div>

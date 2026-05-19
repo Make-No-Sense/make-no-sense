@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
+import { urlForOptimized } from "@/sanity/lib/image";
 
 interface MenuItem {
   _id: string;
@@ -23,7 +23,7 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
       <div className="relative aspect-video bg-char-black/40">
         {item.image?.asset?._ref ? (
           <Image
-            src={urlFor(item.image).width(500).height(350).url()}
+            src={urlForOptimized(item.image).width(500).height(350).url()}
             alt={item.image.alt ?? item.name}
             fill
             priority={priority}
