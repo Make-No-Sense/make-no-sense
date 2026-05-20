@@ -1,13 +1,38 @@
 import Link from 'next/link'
+import Image from 'next/image'
+import { urlForOptimized } from '@/sanity/lib/image'
+
+interface SanityImage {
+  asset: { _ref: string; _type: string } | null
+  alt: string | null
+}
 
 interface Props {
   headline: string | null
   subheadline: string | null
+  truckImage: SanityImage | null
 }
 
-export function HeroSection({ headline, subheadline }: Props) {
+export function HeroSection({ headline, subheadline, truckImage }: Props) {
+  const hasImage = Boolean(truckImage?.asset)
+
   return (
     <section className="relative min-h-screen bg-char-black flex items-center justify-center overflow-hidden">
+      {/* Background photo */}
+      {hasImage && (
+        <Image
+          src={urlForOptimized(truckImage!).width(1920).height(1080).url()}
+          alt={truckImage!.alt ?? 'Make No Sense food truck'}
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+      )}
+
+      {/* Gradient overlay — dark at top/bottom, lighter in the middle so the photo shows through */}
+      <div className="absolute inset-0 bg-gradient-to-b from-char-black/90 via-char-black/60 to-char-black/80" />
+
       {/* Grain texture overlay */}
       <div
         className="absolute inset-0 opacity-20"
@@ -18,9 +43,6 @@ export function HeroSection({ headline, subheadline }: Props) {
         }}
       />
 
-      {/* Gradient vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-char-black/60 via-transparent to-char-black/80" />
-
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
         <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm sm:text-base mb-6">
@@ -28,7 +50,7 @@ export function HeroSection({ headline, subheadline }: Props) {
         </p>
 
         <h1 className="font-display uppercase text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6">
-          {headline ?? 'Make No\u00A0Sense'}
+          {headline ?? 'Make No Sense'}
         </h1>
 
         {subheadline && (

@@ -43,6 +43,7 @@ export default async function HomePage() {
       <HeroSection
         headline={settings?.heroHeadline ?? null}
         subheadline={settings?.heroSubheadline ?? null}
+        truckImage={settings?.truckImage ?? null}
       />
       <MenuPreview items={featuredItems ?? []} />
       <NextEventTeaser event={nextEvent} />

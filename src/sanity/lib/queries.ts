@@ -9,7 +9,14 @@ export const siteSettingsQuery = defineQuery(`
     instagramUrl,
     tiktokUrl,
     facebookUrl,
-    googleCalendarId
+    googleCalendarId,
+    truckImage {
+      asset {
+        _ref,
+        _type
+      },
+      alt
+    }
   }
 `)
 
