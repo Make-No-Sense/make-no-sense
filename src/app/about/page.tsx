@@ -65,7 +65,7 @@ export default async function AboutPage() {
       <section className="bg-char-black py-20 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <blockquote className="font-display uppercase text-off-white text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
-            "We don't just serve food. We serve an experience."
+            &ldquo;We don&apos;t just serve food. We serve an experience.&rdquo;
           </blockquote>
           <div className="mx-auto mt-6 h-1 w-12 bg-truck-red rounded" />
 
@@ -78,7 +78,7 @@ export default async function AboutPage() {
               fries, and real flavors made from scratch.
             </p>
             <p className="mt-4 text-light-gray text-base leading-relaxed">
-              We started with one belief: that great food doesn't need a building
+              We started with one belief: that great food doesn&apos;t need a building
               — just a truck, a passion, and a community worth feeding.
             </p>
           </div>
@@ -129,10 +129,10 @@ export default async function AboutPage() {
           </h2>
           <div className="mt-2 mb-10 bg-mid-gray rounded-lg px-8 py-8 sm:px-12 sm:py-10 border-l-4 border-truck-red text-left">
             <p className="text-off-white text-lg leading-relaxed">
-              The black truck with red and yellow flames isn't just how we get
+              The black truck with red and yellow flames isn&apos;t just how we get
               around —{" "}
               <span className="font-display uppercase text-truck-red">
-                it's who we are.
+                it&apos;s who we are.
               </span>
             </p>
             <p className="mt-4 text-light-gray text-base leading-relaxed">
