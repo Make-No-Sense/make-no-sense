@@ -59,6 +59,4 @@ export const siteSettings = defineType({
       ]
     }),
   ],
-  // Prevent creating more than one siteSettings document
-  __experimental_actions: ['update', 'publish'],
 })
