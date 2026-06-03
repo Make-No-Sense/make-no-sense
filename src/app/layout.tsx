@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fredoka, DM_Sans } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 
 const fredoka = Fredoka({
   weight: "400",
@@ -57,9 +55,7 @@ export default function RootLayout({
       className={`${fredoka.variable} ${dmSans.variable} h-full antialiased overflow-x-hidden`}
     >
       <body className="min-h-full flex flex-col bg-char-black font-sans">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

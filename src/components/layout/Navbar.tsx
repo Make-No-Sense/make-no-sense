@@ -29,6 +29,7 @@ export function Navbar() {
               alt="Make No Sense logo"
               width={42}
               height={42}
+              style={{ width: '42px', height: '42px' }}
               className="rounded-full object-cover"
             />
             Make No Sense
