@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../";
 
 @theme {
   /* Colors */
@@ -35,4 +36,87 @@ button,
 a,
 [role="button"] {
   touch-action: manipulation;
+}
+
+/* Admin dark table — outside any layer so these rules always win.
+   Reused across Ingredients, Stock, Log Usage, Log Waste, Expenses, Purchase Orders. */
+.dt-container {
+  background-color: #1B3A5C;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+.dt-head {
+  background-color: #12202E;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.dt-head-cell {
+  text-align: left;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  font-weight: 600;
+}
+.dt-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #1B3A5C;
+  transition: background-color 0.15s;
+}
+.dt-row:last-child {
+  border-bottom: none;
+}
+.dt-row:hover {
+  background-color: #1F4470;
+}
+.dt-row-alt {
+  background-color: #163554;
+}
+.dt-row-alt:hover {
+  background-color: #1F4470;
+}
+.dt-cell-primary {
+  padding: 0.75rem 1.25rem;
+  color: #ffffff;
+}
+.dt-cell-secondary {
+  padding: 0.75rem 1.25rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.dt-cell-mono {
+  padding: 0.75rem 1.25rem;
+  color: #ffffff;
+  font-family: "Courier New", Courier, monospace;
+}
+.dt-cell-actions {
+  padding: 0.75rem 1.25rem;
+}
+.dt-empty {
+  padding: 3rem 1.25rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+.dt-icon-edit {
+  padding: 0.375rem;
+  border-radius: 0.25rem;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.15s, background-color 0.15s;
+}
+.dt-icon-edit:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.dt-icon-delete {
+  padding: 0.375rem;
+  border-radius: 0.25rem;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.15s, background-color 0.15s;
+}
+.dt-icon-delete:hover {
+  color: #f87171;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.dt-icon-delete:disabled {
+  opacity: 0.3;
 }
