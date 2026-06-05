@@ -24,7 +24,7 @@ export async function addIngredient(formData: FormData) {
   revalidatePath('/admin/ingredients')
 }
 
-export async function updateIngredient(id: number, formData: FormData) {
+export async function updateIngredient(id: string, formData: FormData) {
   const name = formData.get('name') as string
   const category = formData.get('category') as string
   const unit = formData.get('unit') as string
@@ -40,7 +40,7 @@ export async function updateIngredient(id: number, formData: FormData) {
   revalidatePath('/admin/ingredients')
 }
 
-export async function deleteIngredient(id: number) {
+export async function deleteIngredient(id: string) {
   await supabaseAdmin.from('stock_levels').delete().eq('ingredient_id', id)
 
   const { error } = await supabaseAdmin
