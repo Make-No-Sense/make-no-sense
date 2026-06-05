@@ -70,15 +70,23 @@ export function Footer() {
 
         <div className="mt-10 border-t border-off-white/10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-light-gray">
           <p>&copy; {new Date().getFullYear()} Make No Sense. All rights reserved.</p>
-          <p>
-            Built by{" "}
-            <a
-              href="https://makenosense.info"
+          <div className="flex items-center gap-4">
+            <Link
+              href="/admin/login"
               className="hover:text-off-white transition-colors"
             >
-              makenosense.info
-            </a>
-          </p>
+              Staff sign in
+            </Link>
+            <p>
+              Built by{" "}
+              <a
+                href="https://makenosense.info"
+                className="hover:text-off-white transition-colors"
+              >
+                makenosense.info
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

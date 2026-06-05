@@ -84,7 +84,7 @@ export function AdminSidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
+      <Link href="/" className="flex items-center gap-3 px-4 py-5 border-b border-white/10 hover:opacity-80 transition-opacity">
         <Image
           src="/MNS_logo_3.jpg"
           alt="Make No Sense logo"
@@ -95,7 +95,7 @@ export function AdminSidebar() {
         <span className="font-display text-sm uppercase tracking-widest text-truck-red leading-tight">
           Make No Sense
         </span>
-      </div>
+      </Link>
 
       {/* Nav links */}
       <nav className="flex-1 flex flex-col gap-1 p-3 overflow-y-auto">
@@ -124,7 +124,7 @@ export function AdminSidebar() {
 
       {/* ── Mobile top bar ──────────────────────────────── */}
       <div className="md:hidden bg-admin-navy flex items-center justify-between px-4 h-14 sticky top-0 z-40 border-b border-white/10">
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <Image
             src="/MNS_logo_3.jpg"
             alt="Make No Sense logo"
@@ -135,7 +135,7 @@ export function AdminSidebar() {
           <span className="font-display text-sm uppercase tracking-widest text-truck-red">
             Make No Sense
           </span>
-        </div>
+        </Link>
         <button
           onClick={() => setMobileOpen((v) => !v)}
           className="text-off-white p-2 cursor-pointer"
