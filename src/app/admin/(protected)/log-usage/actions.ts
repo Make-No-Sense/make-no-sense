@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { sendLowStockAlert } from '@/lib/alerts'
 
 function revalidate() {
   revalidatePath('/admin/log-usage')
@@ -22,7 +23,7 @@ export async function logUsage(formData: FormData) {
   // Decrement stock — floor at 0, never go negative
   const { data: stock } = await supabaseAdmin
     .from('stock_levels')
-    .select('quantity')
+    .select('quantity, reorder_threshold')
     .eq('ingredient_id', ingredient_id)
     .single()
 
@@ -32,6 +33,25 @@ export async function logUsage(formData: FormData) {
       .from('stock_levels')
       .update({ quantity: newQty, updated_at: new Date().toISOString() })
       .eq('ingredient_id', ingredient_id)
+
+    // Alert only when stock just crosses below threshold (was OK, now low)
+    const justCrossed =
+      stock.reorder_threshold > 0 &&
+      stock.quantity > stock.reorder_threshold &&
+      newQty <= stock.reorder_threshold
+
+    if (justCrossed) {
+      const { data: ing } = await supabaseAdmin
+        .from('ingredients')
+        .select('name, unit')
+        .eq('id', ingredient_id)
+        .single()
+
+      if (ing) {
+        sendLowStockAlert(ing.name, newQty, ing.unit, stock.reorder_threshold)
+          .catch((err) => console.error('[alerts] low stock alert failed:', err))
+      }
+    }
   }
 
   revalidate()
