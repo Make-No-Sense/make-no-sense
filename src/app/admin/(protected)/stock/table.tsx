@@ -73,8 +73,8 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
         </h1>
       </div>
 
-      <div className="rounded-xl overflow-hidden shadow-lg border border-white/5">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto overflow-y-hidden rounded-xl shadow-lg border border-white/5">
+        <table className="w-full text-sm" style={{ minWidth: '680px' }}>
           <thead>
             <tr style={{ background: '#12202E' }}>
               <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Ingredient</th>
