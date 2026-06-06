@@ -1,5 +1,11 @@
-import { Package, AlertTriangle, DollarSign } from 'lucide-react'
+import { Package, AlertTriangle, DollarSign, Clock } from 'lucide-react'
 import { supabaseAdmin } from '@/lib/supabase'
+
+function formatHours(minutes: number) {
+  const h = Math.floor(minutes / 60)
+  const m = Math.round(minutes % 60)
+  return `${h}h ${m}m`
+}
 
 export default async function DashboardPage() {
   const now = new Date()
@@ -11,11 +17,18 @@ export default async function DashboardPage() {
   const startOfMonthISO = new Date(year, month - 1, 1).toISOString()
   const startOfNextMonthISO = new Date(year, month, 1).toISOString()
 
+  // Monday of current week
+  const day = now.getDay()
+  const monday = new Date(now)
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1))
+  monday.setHours(0, 0, 0, 0)
+
   const [
     { count: ingredientCount },
     { data: stockData },
     { data: expenseData },
     { data: wasteData },
+    { data: shiftData },
   ] = await Promise.all([
     supabaseAdmin
       .from('ingredients')
@@ -33,6 +46,11 @@ export default async function DashboardPage() {
       .select('quantity')
       .gte('logged_at', startOfMonthISO)
       .lt('logged_at', startOfNextMonthISO),
+    supabaseAdmin
+      .from('shifts')
+      .select('staff_name, total_minutes')
+      .gte('shift_start', monday.toISOString())
+      .not('shift_end', 'is', null),
   ])
 
   const lowStockCount = (stockData ?? []).filter(
@@ -41,6 +59,18 @@ export default async function DashboardPage() {
 
   const monthlyExpenses = (expenseData ?? []).reduce((sum, e) => sum + e.amount, 0)
   const monthlyWaste = (wasteData ?? []).reduce((sum, w) => sum + w.quantity, 0)
+
+  // Sum total_minutes per staff member, then average across all staff
+  const staffTotals: Record<string, number> = {}
+  for (const shift of shiftData ?? []) {
+    if (shift.total_minutes) {
+      staffTotals[shift.staff_name] = (staffTotals[shift.staff_name] ?? 0) + shift.total_minutes
+    }
+  }
+  const staffCount = Object.keys(staffTotals).length
+  const avgMinutes = staffCount > 0
+    ? Object.values(staffTotals).reduce((a, b) => a + b, 0) / staffCount
+    : 0
 
   const stats = [
     {
@@ -66,6 +96,12 @@ export default async function DashboardPage() {
       value: Number(monthlyWaste.toFixed(1)),
       icon: AlertTriangle,
       description: 'Units logged as waste',
+    },
+    {
+      label: 'Avg Hours This Week',
+      value: formatHours(avgMinutes),
+      icon: Clock,
+      description: 'Per staff member',
     },
   ]
 
