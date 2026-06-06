@@ -10,6 +10,7 @@ import {
   BarChart3,
   Minus,
   Trash2,
+  UtensilsCrossed,
   DollarSign,
   ClipboardList,
   Menu,
@@ -23,6 +24,7 @@ const navLinks = [
   { href: "/admin/stock", label: "Stock", icon: BarChart3 },
   { href: "/admin/log-usage", label: "Log Usage", icon: Minus },
   { href: "/admin/log-waste", label: "Log Waste", icon: Trash2 },
+  { href: "/admin/team-meals", label: "Team Meals", icon: UtensilsCrossed },
   { href: "/admin/expenses", label: "Expenses", icon: DollarSign },
   { href: "/admin/purchase-orders", label: "Purchase Orders", icon: ClipboardList },
 ];
