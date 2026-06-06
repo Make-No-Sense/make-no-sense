@@ -61,7 +61,7 @@ export function CategoryFilter({ categories }: { categories: Category[] }) {
       className="sticky top-16 z-40 bg-char-black/95 backdrop-blur-sm border-b border-off-white/10 overflow-x-auto"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-1 py-3 min-w-max sm:min-w-0 sm:flex-wrap">
+        <div className="flex gap-1 py-3 min-w-max sm:min-w-0 sm:flex-wrap" style={{ justifyContent: 'center' }}>
           {categories.map(({ _id, name, slug }) => (
             <button
               type="button"

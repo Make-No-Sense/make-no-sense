@@ -49,16 +49,9 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
 
       {/* Body */}
       <div className="p-5 flex flex-col flex-1 gap-2">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display uppercase text-off-white text-base leading-tight">
-            {item.name}
-          </h3>
-          {item.price != null && item.price > 0 && (
-            <span className="font-mono text-amber-gold font-bold text-base shrink-0">
-              ${item.price.toFixed(2)}
-            </span>
-          )}
-        </div>
+        <h3 className="font-display uppercase text-off-white text-base leading-tight">
+          {item.name}
+        </h3>
 
         {item.description && (
           <p className="text-light-gray text-sm leading-relaxed">{item.description}</p>

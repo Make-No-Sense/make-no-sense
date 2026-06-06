@@ -68,22 +68,10 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
                 </div>
 
                 {/* Info */}
-                <div className="p-5 flex items-start justify-between gap-4">
-                  <div>
-                    {item.category && (
-                      <p className="font-display text-light-gray text-xs uppercase tracking-wider mb-1">
-                        {item.category}
-                      </p>
-                    )}
-                    <h3 className="font-display uppercase text-off-white text-lg leading-tight">
-                      {item.name}
-                    </h3>
-                  </div>
-                  {item.price != null && item.price > 0 && (
-                    <span className="font-mono text-amber-gold text-lg font-bold shrink-0">
-                      ${item.price.toFixed(2)}
-                    </span>
-                  )}
+                <div className="p-5 text-center">
+                  <h3 className="font-display uppercase text-off-white text-xl font-bold leading-tight">
+                    {item.name}
+                  </h3>
                 </div>
               </div>
             ))}

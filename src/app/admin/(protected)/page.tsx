@@ -1,4 +1,4 @@
-import { Package, AlertTriangle, DollarSign, Trash2 } from 'lucide-react'
+import { Package, AlertTriangle, DollarSign } from 'lucide-react'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export default async function DashboardPage() {
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
     {
       label: 'Total Waste This Month',
       value: Number(monthlyWaste.toFixed(1)),
-      icon: Trash2,
+      icon: AlertTriangle,
       description: 'Units logged as waste',
     },
   ]
@@ -79,7 +79,7 @@ export default async function DashboardPage() {
         {stats.map(({ label, value, icon: Icon, description }) => (
           <div
             key={label}
-            className="bg-white rounded-xl p-6 flex flex-col gap-4 shadow-sm border border-black/5"
+            className="bg-white rounded-xl p-6 flex flex-col gap-4 md:gap-2 shadow-sm border border-black/5"
           >
             <div className="flex items-center justify-between">
               <p className="text-admin-navy font-display uppercase tracking-wide text-sm">
@@ -89,10 +89,10 @@ export default async function DashboardPage() {
                 <Icon size={18} className="text-admin-navy/50" />
               </div>
             </div>
-            <p className="font-mono text-4xl font-bold text-amber-gold">
+            <p className="font-mono text-4xl font-bold text-[#1B3A5C] md:text-right">
               {value}
             </p>
-            <p className="text-light-gray text-xs font-sans">{description}</p>
+            <p className="text-light-gray text-xs font-sans md:text-right">{description}</p>
           </div>
         ))}
       </div>
