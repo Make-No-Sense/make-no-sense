@@ -11,6 +11,7 @@ import {
   Minus,
   Trash2,
   UtensilsCrossed,
+  Clock,
   DollarSign,
   ClipboardList,
   Menu,
@@ -25,6 +26,7 @@ const navLinks = [
   { href: "/admin/log-usage", label: "Log Usage", icon: Minus },
   { href: "/admin/log-waste", label: "Log Waste", icon: Trash2 },
   { href: "/admin/team-meals", label: "Team Meals", icon: UtensilsCrossed },
+  { href: "/admin/staff-hours", label: "Staff Hours", icon: Clock },
   { href: "/admin/expenses", label: "Expenses", icon: DollarSign },
   { href: "/admin/purchase-orders", label: "Purchase Orders", icon: ClipboardList },
 ];
