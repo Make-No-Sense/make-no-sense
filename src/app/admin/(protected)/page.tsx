@@ -1,33 +1,74 @@
-import { Package, AlertTriangle, DollarSign } from "lucide-react";
+import { Package, AlertTriangle, DollarSign, Trash2 } from 'lucide-react'
+import { supabaseAdmin } from '@/lib/supabase'
 
-const stats = [
-  {
-    label: "Total Ingredients",
-    value: 0,
-    icon: Package,
-    description: "Items tracked in inventory",
-  },
-  {
-    label: "Low Stock Items",
-    value: 0,
-    icon: AlertTriangle,
-    description: "Below minimum threshold",
-  },
-  {
-    label: "This Month Expenses",
-    value: "$0",
-    icon: DollarSign,
-    description: "Total spend so far",
-  },
-  {
-    label: "Total Waste This Month",
-    value: 0,
-    icon: AlertTriangle,
-    description: "Units logged as waste",
-  },
-];
+export default async function DashboardPage() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = now.getMonth() + 1
+  const startOfMonth = `${year}-${String(month).padStart(2, '0')}-01`
+  const lastDay = new Date(year, month, 0).getDate()
+  const endOfMonth = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`
+  const startOfMonthISO = new Date(year, month - 1, 1).toISOString()
+  const startOfNextMonthISO = new Date(year, month, 1).toISOString()
 
-export default function DashboardPage() {
+  const [
+    { count: ingredientCount },
+    { data: stockData },
+    { data: expenseData },
+    { data: wasteData },
+  ] = await Promise.all([
+    supabaseAdmin
+      .from('ingredients')
+      .select('*', { count: 'exact', head: true }),
+    supabaseAdmin
+      .from('stock_levels')
+      .select('quantity, reorder_threshold'),
+    supabaseAdmin
+      .from('expenses')
+      .select('amount')
+      .gte('date', startOfMonth)
+      .lte('date', endOfMonth),
+    supabaseAdmin
+      .from('waste_log')
+      .select('quantity')
+      .gte('logged_at', startOfMonthISO)
+      .lt('logged_at', startOfNextMonthISO),
+  ])
+
+  const lowStockCount = (stockData ?? []).filter(
+    (s) => s.reorder_threshold > 0 && s.quantity <= s.reorder_threshold
+  ).length
+
+  const monthlyExpenses = (expenseData ?? []).reduce((sum, e) => sum + e.amount, 0)
+  const monthlyWaste = (wasteData ?? []).reduce((sum, w) => sum + w.quantity, 0)
+
+  const stats = [
+    {
+      label: 'Total Ingredients',
+      value: ingredientCount ?? 0,
+      icon: Package,
+      description: 'Items tracked in inventory',
+    },
+    {
+      label: 'Low Stock Items',
+      value: lowStockCount,
+      icon: AlertTriangle,
+      description: 'Below minimum threshold',
+    },
+    {
+      label: 'This Month Expenses',
+      value: `$${monthlyExpenses.toFixed(2)}`,
+      icon: DollarSign,
+      description: 'Total spend so far',
+    },
+    {
+      label: 'Total Waste This Month',
+      value: Number(monthlyWaste.toFixed(1)),
+      icon: Trash2,
+      description: 'Units logged as waste',
+    },
+  ]
+
   return (
     <div className="p-6 md:p-10">
       <h1 className="font-display text-3xl uppercase tracking-wide text-admin-navy mb-8">
@@ -56,5 +97,5 @@ export default function DashboardPage() {
         ))}
       </div>
     </div>
-  );
+  )
 }

@@ -7,6 +7,7 @@ export interface CalendarEvent {
   end: string;
   location?: string;
   description?: string;
+  visibility?: string;
 }
 
 // Strips internal prefixes like "MNS Lunch - " and returns the venue name
@@ -48,8 +49,16 @@ function formatTime(start: string, end: string): string {
   return e ? `${s} – ${e}` : s;
 }
 
+function isPublicEvent(event: CalendarEvent): boolean {
+  const title = (event.summary ?? '').trim()
+  if (!title) return false
+  if (event.visibility === 'private') return false
+  if (title.toUpperCase().startsWith('PRIVATE')) return false
+  return true
+}
+
 export function normalizeCalendarEvents(events: CalendarEvent[]): TruckEvent[] {
-  return events.map((e) => ({
+  return events.filter(isPublicEvent).map((e) => ({
     id: e.id,
     title: parseVenue(e.summary),
     date: formatDate(e.start),
@@ -108,11 +117,12 @@ export async function getUpcomingEvents(
 
     return data.items.map((event: any) => ({
       id: event.id,
-      summary: event.summary || "Event",
+      summary: event.summary || "",
       start: event.start?.dateTime || event.start?.date || "",
       end: event.end?.dateTime || event.end?.date || "",
       location: event.location,
       description: event.description,
+      visibility: event.visibility,
     }));
   } catch (error) {
     console.error("[calendar] fetch error:", error);
