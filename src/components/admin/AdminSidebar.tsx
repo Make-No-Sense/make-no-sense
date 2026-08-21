@@ -21,7 +21,7 @@ import {
 
 const navLinks = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/admin/ingredients", label: "Ingredients", icon: Package },
+  { href: "/admin/ingredients", label: "Inventory", icon: Package },
   { href: "/admin/stock", label: "Stock", icon: BarChart3 },
   { href: "/admin/log-usage", label: "Log Usage", icon: Minus },
   { href: "/admin/log-waste", label: "Log Waste", icon: Trash2 },

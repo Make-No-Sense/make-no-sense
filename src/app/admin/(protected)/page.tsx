@@ -24,14 +24,14 @@ export default async function DashboardPage() {
   monday.setHours(0, 0, 0, 0)
 
   const [
-    { count: ingredientCount },
+    { count: inventoryCount },
     { data: stockData },
     { data: expenseData },
     { data: wasteData },
     { data: shiftData },
   ] = await Promise.all([
     supabaseAdmin
-      .from('ingredients')
+      .from('inventory_items')
       .select('*', { count: 'exact', head: true }),
     supabaseAdmin
       .from('stock_levels')
@@ -74,8 +74,8 @@ export default async function DashboardPage() {
 
   const stats = [
     {
-      label: 'Total Ingredients',
-      value: ingredientCount ?? 0,
+      label: 'Inventory Items',
+      value: inventoryCount ?? 0,
       icon: Package,
       description: 'Items tracked in inventory',
     },

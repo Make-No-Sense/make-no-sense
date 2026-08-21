@@ -1,16 +1,16 @@
 import type { Metadata } from 'next'
 import { supabaseAdmin } from '@/lib/supabase'
-import { IngredientTable } from './table'
+import { InventoryTable } from './table'
 
-export const metadata: Metadata = { title: 'Ingredients' }
+export const metadata: Metadata = { title: 'Inventory' }
 
-export default async function IngredientsPage() {
+export default async function InventoryPage() {
   const { data, error } = await supabaseAdmin
-    .from('ingredients')
-    .select('id, name, category, unit, cost_per_unit')
+    .from('inventory_items')
+    .select('id, name, item_type, category, unit, cost_per_unit')
     .order('name')
 
-  if (error) console.error('[ingredients] fetch error:', error.message)
+  if (error) console.error('[inventory] fetch error:', error.message)
 
-  return <IngredientTable ingredients={data ?? []} />
+  return <InventoryTable items={data ?? []} />
 }

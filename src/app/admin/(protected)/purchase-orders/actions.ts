@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
 
-type StockItem = { ingredient_id: string; quantity: number }
+type StockItem = { inventory_item_id: string; quantity: number }
 
 function revalidate() {
   revalidatePath('/admin/purchase-orders')
@@ -15,7 +15,7 @@ async function addItemsToStock(items: StockItem[]) {
     const { data: stock } = await supabaseAdmin
       .from('stock_levels')
       .select('quantity')
-      .eq('ingredient_id', item.ingredient_id)
+      .eq('inventory_item_id', item.inventory_item_id)
       .single()
 
     if (stock) {
@@ -25,7 +25,7 @@ async function addItemsToStock(items: StockItem[]) {
           quantity: stock.quantity + item.quantity,
           updated_at: new Date().toISOString(),
         })
-        .eq('ingredient_id', item.ingredient_id)
+        .eq('inventory_item_id', item.inventory_item_id)
     }
   }
 }
@@ -34,7 +34,7 @@ export async function createOrder(data: {
   supplier: string
   status: string
   notes: string | null
-  items: Array<{ ingredient_id: string; quantity: number; unit_cost: number }>
+  items: Array<{ inventory_item_id: string; quantity: number; unit_cost: number }>
 }) {
   const { supplier, status, notes, items } = data
   const total = items.reduce((sum, i) => sum + i.quantity * i.unit_cost, 0)
@@ -63,17 +63,14 @@ export async function createOrder(data: {
 export async function updateOrderStatus(id: string, newStatus: string) {
   const { data: order, error: fetchError } = await supabaseAdmin
     .from('purchase_orders')
-    .select('status, purchase_order_items(ingredient_id, quantity)')
+    .select('status, purchase_order_items(inventory_item_id, quantity)')
     .eq('id', id)
     .single()
 
   if (fetchError) throw new Error(fetchError.message)
 
-  // Add stock only when transitioning INTO received for the first time
   if (newStatus === 'received' && order.status !== 'received') {
-    await addItemsToStock(
-      order.purchase_order_items as StockItem[]
-    )
+    await addItemsToStock(order.purchase_order_items as StockItem[])
   }
 
   const { error } = await supabaseAdmin

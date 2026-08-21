@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation'
 import { Plus, Trash2, Pencil, X, ChevronDown, ChevronRight } from 'lucide-react'
 import { createOrder, updateOrderStatus, deleteOrder } from './actions'
 
-type Ingredient = { id: string; name: string; unit: string }
+type InventoryItem = { id: string; name: string; unit: string }
 
 type OrderItem = {
   id: string
-  ingredient_id: string
+  inventory_item_id: string
   quantity: number
   unit_cost: number
-  ingredients: { name: string; unit: string }
+  inventory_items: { name: string; unit: string }
 }
 
 export type PurchaseOrder = {
@@ -25,7 +25,7 @@ export type PurchaseOrder = {
   purchase_order_items: OrderItem[]
 }
 
-type LineItem = { key: number; ingredient_id: string; quantity: string; unit_cost: string }
+type LineItem = { key: number; inventory_item_id: string; quantity: string; unit_cost: string }
 
 const STATUSES = [
   { value: 'pending',   label: 'Pending' },
@@ -63,16 +63,16 @@ function fmt(n: number) {
 let keyCounter = 1
 
 export function PurchaseOrdersClient({
-  ingredients,
+  inventoryItems,
   orders,
 }: {
-  ingredients: Ingredient[]
+  inventoryItems: InventoryItem[]
   orders: PurchaseOrder[]
 }) {
   const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { key: 0, ingredient_id: '', quantity: '', unit_cost: '' },
+    { key: 0, inventory_item_id: '', quantity: '', unit_cost: '' },
   ])
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [editingOrder, setEditingOrder] = useState<PurchaseOrder | null>(null)
@@ -85,7 +85,7 @@ export function PurchaseOrdersClient({
   function addLineItem() {
     setLineItems((prev) => [
       ...prev,
-      { key: keyCounter++, ingredient_id: '', quantity: '', unit_cost: '' },
+      { key: keyCounter++, inventory_item_id: '', quantity: '', unit_cost: '' },
     ])
   }
 
@@ -107,7 +107,7 @@ export function PurchaseOrdersClient({
     const notes = (fd.get('notes') as string).trim() || null
 
     const validItems = lineItems.filter(
-      (i) => i.ingredient_id && parseFloat(i.quantity) > 0
+      (i) => i.inventory_item_id && parseFloat(i.quantity) > 0
     )
     if (validItems.length === 0) return
 
@@ -117,13 +117,13 @@ export function PurchaseOrdersClient({
         status,
         notes,
         items: validItems.map((i) => ({
-          ingredient_id: i.ingredient_id,
+          inventory_item_id: i.inventory_item_id,
           quantity: parseFloat(i.quantity),
           unit_cost: parseFloat(i.unit_cost) || 0,
         })),
       })
       formRef.current?.reset()
-      setLineItems([{ key: keyCounter++, ingredient_id: '', quantity: '', unit_cost: '' }])
+      setLineItems([{ key: keyCounter++, inventory_item_id: '', quantity: '', unit_cost: '' }])
       router.refresh()
     })
   }
@@ -205,24 +205,24 @@ export function PurchaseOrdersClient({
           <div className="flex flex-col gap-3">
             {/* Column headers — shown once */}
             <div className="grid gap-4" style={{ gridTemplateColumns: '1fr 1fr 1fr 32px' }}>
-              <span className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Ingredient</span>
+              <span className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Item</span>
               <span className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Qty</span>
               <span className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Unit $</span>
               <span />
             </div>
 
             {lineItems.map((item) => {
-              const unit = ingredients.find((i) => i.id === item.ingredient_id)?.unit
+              const unit = inventoryItems.find((i) => i.id === item.inventory_item_id)?.unit
               return (
                 <div key={item.key} className="grid gap-4 items-center" style={{ gridTemplateColumns: '1fr 1fr 1fr 32px' }}>
                   <select
                     required
-                    value={item.ingredient_id}
-                    onChange={(e) => updateLineItem(item.key, 'ingredient_id', e.target.value)}
+                    value={item.inventory_item_id}
+                    onChange={(e) => updateLineItem(item.key, 'inventory_item_id', e.target.value)}
                     className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40 bg-white"
                   >
                     <option value="" disabled>Select ingredient</option>
-                    {ingredients.map((ing) => (
+                    {inventoryItems.map((ing) => (
                       <option key={ing.id} value={ing.id}>{ing.name}</option>
                     ))}
                   </select>
@@ -374,7 +374,7 @@ export function PurchaseOrdersClient({
                             <table className="w-full text-xs">
                               <thead>
                                 <tr className="border-b border-white/10">
-                                  <th className="text-left pb-2 text-white/40 font-display uppercase tracking-widest">Ingredient</th>
+                                  <th className="text-left pb-2 text-white/40 font-display uppercase tracking-widest">Item</th>
                                   <th className="text-left pb-2 text-white/40 font-display uppercase tracking-widest">Qty</th>
                                   <th className="text-left pb-2 text-white/40 font-display uppercase tracking-widest">Unit Cost</th>
                                   <th className="text-right pb-2 text-white/40 font-display uppercase tracking-widest">Subtotal</th>
@@ -383,9 +383,9 @@ export function PurchaseOrdersClient({
                               <tbody>
                                 {order.purchase_order_items.map((item) => (
                                   <tr key={item.id} className="border-b border-white/5 last:border-0">
-                                    <td className="py-2 text-white/80">{item.ingredients.name}</td>
+                                    <td className="py-2 text-white/80">{item.inventory_items.name}</td>
                                     <td className="py-2 text-white/60 font-mono">
-                                      {item.quantity} {item.ingredients.unit}
+                                      {item.quantity} {item.inventory_items.unit}
                                     </td>
                                     <td className="py-2 text-white/60 font-mono">{fmt(item.unit_cost)}</td>
                                     <td className="py-2 text-white font-mono text-right">

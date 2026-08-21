@@ -10,8 +10,8 @@ type StockRow = {
   quantity: number
   reorder_threshold: number
   updated_at: string
-  ingredient_id: string
-  ingredients: {
+  inventory_item_id: string
+  inventory_items: {
     name: string
     category: string
     unit: string
@@ -21,29 +21,23 @@ type StockRow = {
 function StatusBadge({ quantity, reorder_threshold }: { quantity: number; reorder_threshold: number }) {
   if (quantity === 0) {
     return (
-      <span
-        style={{ background: 'rgba(153,27,27,0.5)', color: '#fca5a5' }}
-        className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
-      >
+      <span style={{ background: 'rgba(153,27,27,0.5)', color: '#fca5a5' }}
+        className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap">
         Out of Stock
       </span>
     )
   }
   if (quantity <= reorder_threshold) {
     return (
-      <span
-        style={{ background: 'rgba(120,53,15,0.5)', color: '#fcd34d' }}
-        className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
-      >
+      <span style={{ background: 'rgba(120,53,15,0.5)', color: '#fcd34d' }}
+        className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap">
         Low Stock
       </span>
     )
   }
   return (
-    <span
-      style={{ background: 'rgba(20,83,45,0.5)', color: '#86efac' }}
-      className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
-    >
+    <span style={{ background: 'rgba(20,83,45,0.5)', color: '#86efac' }}
+      className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap">
       In Stock
     </span>
   )
@@ -77,7 +71,7 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
         <table className="w-full text-sm" style={{ minWidth: '680px' }}>
           <thead>
             <tr style={{ background: '#12202E' }}>
-              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Ingredient</th>
+              <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Item</th>
               <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Category</th>
               <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Unit</th>
               <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Qty</th>
@@ -89,12 +83,8 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
           <tbody>
             {rows.length === 0 ? (
               <tr>
-                <td
-                  colSpan={7}
-                  className="text-center px-6 py-16 text-white/40"
-                  style={{ background: '#1B3A5C' }}
-                >
-                  No stock records yet — add ingredients first.
+                <td colSpan={7} className="text-center px-6 py-16 text-white/40" style={{ background: '#1B3A5C' }}>
+                  No stock records yet — add inventory items first.
                 </td>
               </tr>
             ) : (
@@ -104,9 +94,9 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
                   style={{ background: i % 2 === 0 ? '#1B3A5C' : '#163554' }}
                   className="border-t border-white/5 transition-all hover:brightness-125"
                 >
-                  <td className="px-6 py-4 text-white font-medium">{row.ingredients.name}</td>
-                  <td className="px-6 py-4 text-white/60 capitalize">{row.ingredients.category}</td>
-                  <td className="px-6 py-4 text-white/60">{row.ingredients.unit}</td>
+                  <td className="px-6 py-4 text-white font-medium">{row.inventory_items.name}</td>
+                  <td className="px-6 py-4 text-white/60 capitalize">{row.inventory_items.category}</td>
+                  <td className="px-6 py-4 text-white/60">{row.inventory_items.unit}</td>
                   <td className="px-6 py-4 text-white font-mono">{row.quantity}</td>
                   <td className="px-6 py-4 text-white/60 font-mono">{row.reorder_threshold}</td>
                   <td className="px-6 py-4">
@@ -114,11 +104,9 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex justify-end">
-                      <button
-                        onClick={() => setEditing(row)}
+                      <button onClick={() => setEditing(row)}
                         className="p-2 rounded text-white/40 hover:text-white hover:bg-white/10 transition-colors"
-                        aria-label="Update stock"
-                      >
+                        aria-label="Update stock">
                         <Pencil size={15} />
                       </button>
                     </div>
@@ -135,15 +123,10 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-black/5">
               <div>
-                <h2 className="font-display text-lg uppercase tracking-wide text-[#1B3A5C]">
-                  Update Stock
-                </h2>
-                <p className="text-sm text-gray-400 mt-0.5">{editing.ingredients.name}</p>
+                <h2 className="font-display text-lg uppercase tracking-wide text-[#1B3A5C]">Update Stock</h2>
+                <p className="text-sm text-gray-400 mt-0.5">{editing.inventory_items.name}</p>
               </div>
-              <button
-                onClick={() => setEditing(null)}
-                className="p-1.5 rounded hover:bg-gray-100 text-gray-400 transition-colors"
-              >
+              <button onClick={() => setEditing(null)} className="p-1.5 rounded hover:bg-gray-100 text-gray-400 transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -151,47 +134,29 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
             <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
-                  Current Quantity ({editing.ingredients.unit})
+                  Current Quantity ({editing.inventory_items.unit})
                 </label>
-                <input
-                  name="quantity"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  required
+                <input name="quantity" type="number" min="0" step="0.01" required
                   defaultValue={editing.quantity}
-                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-                />
+                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
-                  Reorder Threshold ({editing.ingredients.unit})
+                  Reorder Threshold ({editing.inventory_items.unit})
                 </label>
-                <input
-                  name="reorder_threshold"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  required
+                <input name="reorder_threshold" type="number" min="0" step="0.01" required
                   defaultValue={editing.reorder_threshold}
-                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-                />
+                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setEditing(null)}
-                  className="flex-1 border border-black/10 text-gray-400 rounded-lg py-2 text-sm font-display uppercase tracking-wide hover:bg-gray-50 transition-colors"
-                >
+                <button type="button" onClick={() => setEditing(null)}
+                  className="flex-1 border border-black/10 text-gray-400 rounded-lg py-2 text-sm font-display uppercase tracking-wide hover:bg-gray-50 transition-colors">
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  disabled={isPending}
-                  className="flex-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50"
-                >
+                <button type="submit" disabled={isPending}
+                  className="flex-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50">
                   {isPending ? 'Saving…' : 'Update'}
                 </button>
               </div>

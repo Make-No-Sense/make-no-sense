@@ -10,21 +10,20 @@ function revalidate() {
 }
 
 export async function logUsage(formData: FormData) {
-  const ingredient_id = formData.get('ingredient_id') as string
+  const inventory_item_id = formData.get('inventory_item_id') as string
   const quantity_used = parseFloat(formData.get('quantity_used') as string)
   const event_name = (formData.get('event_name') as string).trim() || null
 
   const { error: logError } = await supabaseAdmin
     .from('usage_log')
-    .insert({ ingredient_id, quantity_used, event_name })
+    .insert({ inventory_item_id, quantity_used, event_name })
 
   if (logError) throw new Error(logError.message)
 
-  // Decrement stock — floor at 0, never go negative
   const { data: stock } = await supabaseAdmin
     .from('stock_levels')
     .select('quantity, reorder_threshold')
-    .eq('ingredient_id', ingredient_id)
+    .eq('inventory_item_id', inventory_item_id)
     .single()
 
   if (stock) {
@@ -32,23 +31,22 @@ export async function logUsage(formData: FormData) {
     await supabaseAdmin
       .from('stock_levels')
       .update({ quantity: newQty, updated_at: new Date().toISOString() })
-      .eq('ingredient_id', ingredient_id)
+      .eq('inventory_item_id', inventory_item_id)
 
-    // Alert only when stock just crosses below threshold (was OK, now low)
     const justCrossed =
       stock.reorder_threshold > 0 &&
       stock.quantity > stock.reorder_threshold &&
       newQty <= stock.reorder_threshold
 
     if (justCrossed) {
-      const { data: ing } = await supabaseAdmin
-        .from('ingredients')
+      const { data: item } = await supabaseAdmin
+        .from('inventory_items')
         .select('name, unit')
-        .eq('id', ingredient_id)
+        .eq('id', inventory_item_id)
         .single()
 
-      if (ing) {
-        sendLowStockAlert(ing.name, newQty, ing.unit, stock.reorder_threshold)
+      if (item) {
+        sendLowStockAlert(item.name, newQty, item.unit, stock.reorder_threshold)
           .catch((err) => console.error('[alerts] low stock alert failed:', err))
       }
     }
@@ -60,7 +58,7 @@ export async function logUsage(formData: FormData) {
 export async function deleteUsageLog(id: string) {
   const { data: log, error: fetchError } = await supabaseAdmin
     .from('usage_log')
-    .select('ingredient_id, quantity_used')
+    .select('inventory_item_id, quantity_used')
     .eq('id', id)
     .single()
 
@@ -73,11 +71,10 @@ export async function deleteUsageLog(id: string) {
 
   if (deleteError) throw new Error(deleteError.message)
 
-  // Restore the quantity back to stock
   const { data: stock } = await supabaseAdmin
     .from('stock_levels')
     .select('quantity')
-    .eq('ingredient_id', log.ingredient_id)
+    .eq('inventory_item_id', log.inventory_item_id)
     .single()
 
   if (stock) {
@@ -87,7 +84,7 @@ export async function deleteUsageLog(id: string) {
         quantity: stock.quantity + log.quantity_used,
         updated_at: new Date().toISOString(),
       })
-      .eq('ingredient_id', log.ingredient_id)
+      .eq('inventory_item_id', log.inventory_item_id)
   }
 
   revalidate()
@@ -97,10 +94,9 @@ export async function updateUsageLog(id: string, formData: FormData) {
   const newQtyUsed = parseFloat(formData.get('quantity_used') as string)
   const event_name = (formData.get('event_name') as string).trim() || null
 
-  // Fetch old values to calculate the stock delta
   const { data: oldLog, error: fetchError } = await supabaseAdmin
     .from('usage_log')
-    .select('ingredient_id, quantity_used')
+    .select('inventory_item_id, quantity_used')
     .eq('id', id)
     .single()
 
@@ -113,22 +109,18 @@ export async function updateUsageLog(id: string, formData: FormData) {
 
   if (updateError) throw new Error(updateError.message)
 
-  // Adjust stock: undo the old deduction, apply the new one
   const { data: stock } = await supabaseAdmin
     .from('stock_levels')
     .select('quantity')
-    .eq('ingredient_id', oldLog.ingredient_id)
+    .eq('inventory_item_id', oldLog.inventory_item_id)
     .single()
 
   if (stock) {
-    const newStockQty = Math.max(
-      0,
-      stock.quantity + oldLog.quantity_used - newQtyUsed
-    )
+    const newStockQty = Math.max(0, stock.quantity + oldLog.quantity_used - newQtyUsed)
     await supabaseAdmin
       .from('stock_levels')
       .update({ quantity: newStockQty, updated_at: new Date().toISOString() })
-      .eq('ingredient_id', oldLog.ingredient_id)
+      .eq('inventory_item_id', oldLog.inventory_item_id)
   }
 
   revalidate()

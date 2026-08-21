@@ -5,22 +5,22 @@ import { LogUsageClient, type LogEntry } from './client'
 export const metadata: Metadata = { title: 'Log Usage' }
 
 export default async function LogUsagePage() {
-  const [{ data: ingredients, error: ingErr }, { data: logs, error: logErr }] =
+  const [{ data: items, error: itemErr }, { data: logs, error: logErr }] =
     await Promise.all([
-      supabaseAdmin.from('ingredients').select('id, name, unit').order('name'),
+      supabaseAdmin.from('inventory_items').select('id, name, unit').order('name'),
       supabaseAdmin
         .from('usage_log')
-        .select('id, quantity_used, event_name, logged_at, ingredients(name, unit)')
+        .select('id, quantity_used, event_name, logged_at, inventory_items(name, unit)')
         .order('logged_at', { ascending: false })
         .limit(20),
     ])
 
-  if (ingErr) console.error('[log-usage] ingredients error:', ingErr.message)
+  if (itemErr) console.error('[log-usage] items error:', itemErr.message)
   if (logErr) console.error('[log-usage] logs error:', logErr.message)
 
   return (
     <LogUsageClient
-      ingredients={ingredients ?? []}
+      inventoryItems={items ?? []}
       logs={(logs ?? []) as unknown as LogEntry[]}
     />
   )

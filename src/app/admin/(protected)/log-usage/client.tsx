@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Pencil, Trash2, X } from 'lucide-react'
 import { logUsage, deleteUsageLog, updateUsageLog } from './actions'
 
-type Ingredient = {
+type InventoryItem = {
   id: string
   name: string
   unit: string
@@ -16,14 +16,14 @@ export type LogEntry = {
   quantity_used: number
   event_name: string | null
   logged_at: string
-  ingredients: { name: string; unit: string }
+  inventory_items: { name: string; unit: string }
 }
 
 export function LogUsageClient({
-  ingredients,
+  inventoryItems,
   logs,
 }: {
-  ingredients: Ingredient[]
+  inventoryItems: InventoryItem[]
   logs: LogEntry[]
 }) {
   const router = useRouter()
@@ -32,7 +32,7 @@ export function LogUsageClient({
   const [editingLog, setEditingLog] = useState<LogEntry | null>(null)
   const [isPending, startTransition] = useTransition()
 
-  const selectedIngredient = ingredients.find((i) => i.id === selectedId)
+  const selectedItem = inventoryItems.find((i) => i.id === selectedId)
 
   function handleSubmit(e: { currentTarget: HTMLFormElement; preventDefault(): void }) {
     e.preventDefault()
@@ -70,78 +70,58 @@ export function LogUsageClient({
         Log Usage
       </h1>
 
-      {/* ── Log form ──────────────────────────────────────── */}
       <div className="bg-white rounded-xl shadow-sm border border-black/5 p-6 max-w-xl mx-auto w-full">
         <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50 mb-5">
           Log New Usage
         </p>
         <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
-              Ingredient
-            </label>
+            <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Item</label>
             <select
-              name="ingredient_id"
+              name="inventory_item_id"
               required
               value={selectedId}
               onChange={(e) => setSelectedId(e.target.value)}
               className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40 bg-white"
             >
-              <option value="" disabled>Select an ingredient</option>
-              {ingredients.map((ing) => (
-                <option key={ing.id} value={ing.id}>{ing.name}</option>
+              <option value="" disabled>Select an item</option>
+              {inventoryItems.map((item) => (
+                <option key={item.id} value={item.id}>{item.name}</option>
               ))}
             </select>
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
-              Quantity Used{selectedIngredient ? ` (${selectedIngredient.unit})` : ''}
+              Quantity Used{selectedItem ? ` (${selectedItem.unit})` : ''}
             </label>
-            <input
-              name="quantity_used"
-              type="number"
-              min="0.01"
-              step="0.01"
-              required
-              placeholder="0.00"
-              className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-            />
+            <input name="quantity_used" type="number" min="0.01" step="0.01" required placeholder="0.00"
+              className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
           </div>
 
           <div className="flex flex-col gap-1.5">
             <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
               Event Name <span className="normal-case font-sans text-black/30">(optional)</span>
             </label>
-            <input
-              name="event_name"
-              type="text"
-              placeholder="e.g. Saturday Opryland"
-              className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-            />
+            <input name="event_name" type="text" placeholder="e.g. Saturday Opryland"
+              className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
           </div>
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="mt-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2.5 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50"
-          >
+          <button type="submit" disabled={isPending}
+            className="mt-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2.5 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50">
             {isPending ? 'Logging…' : 'Log Usage'}
           </button>
         </form>
       </div>
 
-      {/* ── History table ─────────────────────────────────── */}
       <div>
-        <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50 mb-4">
-          Recent Usage
-        </p>
+        <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50 mb-4">Recent Usage</p>
         <div className="overflow-x-auto overflow-y-hidden rounded-xl shadow-lg border border-white/5">
           <table className="w-full text-sm" style={{ minWidth: '560px' }}>
             <thead>
               <tr style={{ background: '#12202E' }}>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Date</th>
-                <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Ingredient</th>
+                <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Item</th>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Qty Used</th>
                 <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-white/60">Event</th>
                 <th className="px-6 py-4" />
@@ -150,46 +130,29 @@ export function LogUsageClient({
             <tbody>
               {logs.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="text-center px-6 py-16 text-white/40"
-                    style={{ background: '#1B3A5C' }}
-                  >
+                  <td colSpan={5} className="text-center px-6 py-16 text-white/40" style={{ background: '#1B3A5C' }}>
                     No usage logged yet.
                   </td>
                 </tr>
               ) : (
                 logs.map((log, i) => (
-                  <tr
-                    key={log.id}
+                  <tr key={log.id}
                     style={{ background: i % 2 === 0 ? '#1B3A5C' : '#163554' }}
-                    className="border-t border-white/5 transition-all hover:brightness-125"
-                  >
+                    className="border-t border-white/5 transition-all hover:brightness-125">
                     <td className="px-6 py-4 text-white/60 font-mono text-xs">
-                      {new Date(log.logged_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                      {new Date(log.logged_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </td>
-                    <td className="px-6 py-4 text-white font-medium">{log.ingredients.name}</td>
+                    <td className="px-6 py-4 text-white font-medium">{log.inventory_items.name}</td>
                     <td className="px-6 py-4 text-white font-mono">{log.quantity_used}</td>
                     <td className="px-6 py-4 text-white/60">{log.event_name ?? '—'}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => setEditingLog(log)}
-                          className="p-2 rounded text-white/40 hover:text-white hover:bg-white/10 transition-colors"
-                          aria-label="Edit"
-                        >
+                        <button onClick={() => setEditingLog(log)}
+                          className="p-2 rounded text-white/40 hover:text-white hover:bg-white/10 transition-colors" aria-label="Edit">
                           <Pencil size={15} />
                         </button>
-                        <button
-                          onClick={() => handleDelete(log.id)}
-                          disabled={isPending}
-                          className="p-2 rounded text-white/40 hover:text-red-400 hover:bg-white/10 transition-colors disabled:opacity-30"
-                          aria-label="Delete"
-                        >
+                        <button onClick={() => handleDelete(log.id)} disabled={isPending}
+                          className="p-2 rounded text-white/40 hover:text-red-400 hover:bg-white/10 transition-colors disabled:opacity-30" aria-label="Delete">
                           <Trash2 size={15} />
                         </button>
                       </div>
@@ -202,21 +165,15 @@ export function LogUsageClient({
         </div>
       </div>
 
-      {/* ── Edit modal ────────────────────────────────────── */}
       {editingLog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md">
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-black/5">
               <div>
-                <h2 className="font-display text-lg uppercase tracking-wide text-[#1B3A5C]">
-                  Edit Usage Log
-                </h2>
-                <p className="text-sm text-gray-400 mt-0.5">{editingLog.ingredients.name}</p>
+                <h2 className="font-display text-lg uppercase tracking-wide text-[#1B3A5C]">Edit Usage Log</h2>
+                <p className="text-sm text-gray-400 mt-0.5">{editingLog.inventory_items.name}</p>
               </div>
-              <button
-                onClick={() => setEditingLog(null)}
-                className="p-1.5 rounded hover:bg-gray-100 text-gray-400 transition-colors"
-              >
+              <button onClick={() => setEditingLog(null)} className="p-1.5 rounded hover:bg-gray-100 text-gray-400 transition-colors">
                 <X size={18} />
               </button>
             </div>
@@ -224,45 +181,29 @@ export function LogUsageClient({
             <form onSubmit={handleEditSubmit} className="px-6 py-5 flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
-                  Quantity Used ({editingLog.ingredients.unit})
+                  Quantity Used ({editingLog.inventory_items.unit})
                 </label>
-                <input
-                  name="quantity_used"
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  required
+                <input name="quantity_used" type="number" min="0.01" step="0.01" required
                   defaultValue={editingLog.quantity_used}
-                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-                />
+                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
               </div>
 
               <div className="flex flex-col gap-1.5">
                 <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">
                   Event Name <span className="normal-case font-sans text-black/30">(optional)</span>
                 </label>
-                <input
-                  name="event_name"
-                  type="text"
-                  placeholder="e.g. Saturday Opryland"
+                <input name="event_name" type="text" placeholder="e.g. Saturday Opryland"
                   defaultValue={editingLog.event_name ?? ''}
-                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40"
-                />
+                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] placeholder:text-black/20 focus:outline-none focus:ring-2 focus:ring-[#B83232]/40" />
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setEditingLog(null)}
-                  className="flex-1 border border-black/10 text-gray-400 rounded-lg py-2 text-sm font-display uppercase tracking-wide hover:bg-gray-50 transition-colors"
-                >
+                <button type="button" onClick={() => setEditingLog(null)}
+                  className="flex-1 border border-black/10 text-gray-400 rounded-lg py-2 text-sm font-display uppercase tracking-wide hover:bg-gray-50 transition-colors">
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  disabled={isPending}
-                  className="flex-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50"
-                >
+                <button type="submit" disabled={isPending}
+                  className="flex-1 bg-[#B83232] hover:bg-[#9a2a2a] text-white rounded-lg py-2 text-sm font-display uppercase tracking-wide transition-colors disabled:opacity-50">
                   {isPending ? 'Saving…' : 'Save'}
                 </button>
               </div>

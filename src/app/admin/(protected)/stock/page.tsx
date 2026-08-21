@@ -7,8 +7,8 @@ export const metadata: Metadata = { title: 'Stock Levels' }
 export default async function StockPage() {
   const { data, error } = await supabaseAdmin
     .from('stock_levels')
-    .select('*, ingredients(name, category, unit)')
-    .order('name', { referencedTable: 'ingredients' })
+    .select('*, inventory_items(name, category, unit)')
+    .order('name', { referencedTable: 'inventory_items' })
 
   if (error) console.error('[stock] fetch error:', error.message)
 

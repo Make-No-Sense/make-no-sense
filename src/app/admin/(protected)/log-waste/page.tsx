@@ -5,22 +5,22 @@ import { LogWasteClient, type WasteEntry } from './client'
 export const metadata: Metadata = { title: 'Log Waste' }
 
 export default async function LogWastePage() {
-  const [{ data: ingredients, error: ingErr }, { data: logs, error: logErr }] =
+  const [{ data: items, error: itemErr }, { data: logs, error: logErr }] =
     await Promise.all([
-      supabaseAdmin.from('ingredients').select('id, name, unit').order('name'),
+      supabaseAdmin.from('inventory_items').select('id, name, unit').order('name'),
       supabaseAdmin
         .from('waste_log')
-        .select('id, quantity, reason, notes, logged_at, ingredients(name, unit)')
+        .select('id, quantity, reason, notes, logged_at, inventory_items(name, unit)')
         .order('logged_at', { ascending: false })
         .limit(20),
     ])
 
-  if (ingErr) console.error('[log-waste] ingredients error:', ingErr.message)
+  if (itemErr) console.error('[log-waste] items error:', itemErr.message)
   if (logErr) console.error('[log-waste] logs error:', logErr.message)
 
   return (
     <LogWasteClient
-      ingredients={ingredients ?? []}
+      inventoryItems={items ?? []}
       logs={(logs ?? []) as unknown as WasteEntry[]}
     />
   )

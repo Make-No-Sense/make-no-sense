@@ -3,7 +3,7 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendLowStockAlert(
-  ingredientName: string,
+  itemName: string,
   currentQty: number,
   unit: string,
   threshold: number
@@ -29,10 +29,10 @@ export async function sendLowStockAlert(
         </p>
 
         <h1 style="margin:0 0 8px; font-size:24px; font-weight:700; color:#1B3A5C;">
-          ${ingredientName}
+          ${itemName}
         </h1>
         <p style="margin:0 0 28px; font-size:14px; color:#666;">
-          This ingredient has fallen to or below its reorder threshold.
+          This inventory item has fallen to or below its reorder threshold.
         </p>
 
         <table style="width:100%; border-collapse:collapse; background:#fff;
@@ -85,7 +85,7 @@ export async function sendLowStockAlert(
   await resend.emails.send({
     from: 'alerts@makenosense.info',
     to: ['natoya@makenosense.info'],
-    subject: `⚠️ Low Stock Alert — ${ingredientName}`,
+    subject: `⚠️ Low Stock Alert — ${itemName}`,
     html,
   })
 }

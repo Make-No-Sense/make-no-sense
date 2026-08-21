@@ -6,9 +6,9 @@ export const metadata: Metadata = { title: 'Purchase Orders' }
 export const dynamic = 'force-dynamic'
 
 export default async function PurchaseOrdersPage() {
-  const [{ data: ingredients, error: ingErr }, { data: orders, error: ordErr }] =
+  const [{ data: inventoryItems, error: invErr }, { data: orders, error: ordErr }] =
     await Promise.all([
-      supabaseAdmin.from('ingredients').select('id, name, unit').order('name'),
+      supabaseAdmin.from('inventory_items').select('id, name, unit').order('name'),
       supabaseAdmin
         .from('purchase_orders')
         .select('id, supplier, status, notes, total, created_at')
@@ -16,7 +16,7 @@ export default async function PurchaseOrdersPage() {
         .limit(50),
     ])
 
-  if (ingErr) console.error('[purchase-orders] ingredients error:', ingErr.message)
+  if (invErr) console.error('[purchase-orders] inventory items error:', invErr.message)
   if (ordErr) console.error('[purchase-orders] orders error:', ordErr.message)
 
   // Fetch items separately — avoids deep nested select failures
@@ -24,7 +24,7 @@ export default async function PurchaseOrdersPage() {
   const { data: items, error: itemsErr } = orderIds.length
     ? await supabaseAdmin
         .from('purchase_order_items')
-        .select('id, order_id, ingredient_id, quantity, unit_cost, ingredients(name, unit)')
+        .select('id, order_id, inventory_item_id, quantity, unit_cost, inventory_items(name, unit)')
         .in('order_id', orderIds)
     : { data: [], error: null }
 
@@ -37,13 +37,13 @@ export default async function PurchaseOrdersPage() {
       .filter((i) => i.order_id === order.id)
       .map((i) => ({
         ...i,
-        ingredients: Array.isArray(i.ingredients) ? i.ingredients[0] : i.ingredients,
+        inventory_items: Array.isArray(i.inventory_items) ? i.inventory_items[0] : i.inventory_items,
       })),
   })) as unknown as PurchaseOrder[]
 
   return (
     <PurchaseOrdersClient
-      ingredients={ingredients ?? []}
+      inventoryItems={inventoryItems ?? []}
       orders={enriched}
     />
   )
