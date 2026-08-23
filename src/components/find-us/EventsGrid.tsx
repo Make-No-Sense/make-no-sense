@@ -14,11 +14,12 @@ export function EventsGrid({ events }: EventsGridProps) {
           {events.map((event) => (
             <div
               key={event.id}
-              className="bg-mid-gray rounded-lg border-l-4 border-neon-cyan p-5 sm:p-6 flex flex-col gap-3 w-full items-center text-center"
+              className="bg-mid-gray rounded-lg border-l-4 p-5 sm:p-6 flex flex-col gap-3 w-full items-center text-center"
+              style={{ borderLeftColor: '#F0A500' }}
             >
               {/* Event name */}
               {event.title && (
-                <p className="font-display uppercase text-off-white text-xl md:text-2xl tracking-tight leading-tight">
+                <p className="font-display text-off-white text-xl md:text-2xl leading-tight">
                   {event.title}
                 </p>
               )}
@@ -34,8 +35,8 @@ export function EventsGrid({ events }: EventsGridProps) {
               {/* Address */}
               {event.address && (
                 <div className="flex items-start gap-2">
-                  <MapPin size={16} className="text-neon-cyan shrink-0 mt-0.5" />
-                  <p className="text-neon-cyan font-medium text-sm leading-relaxed text-left">
+                  <MapPin size={16} className="shrink-0 mt-0.5" style={{ color: '#F0A500' }} />
+                  <p className="font-medium text-sm leading-relaxed text-left" style={{ color: '#F0A500' }}>
                     {event.address}
                   </p>
                 </div>
@@ -45,8 +46,8 @@ export function EventsGrid({ events }: EventsGridProps) {
         </div>
       ) : (
         <div className="bg-mid-gray rounded-lg border-l-4 border-truck-red p-5 sm:p-6 md:p-8 text-center w-full">
-          <Calendar size={48} className="mx-auto text-neon-cyan mb-4" />
-          <p className="font-display uppercase text-off-white text-lg md:text-xl tracking-tight">
+          <Calendar size={48} className="mx-auto mb-4" style={{ color: '#F0A500' }} />
+          <p className="font-display text-off-white text-lg md:text-xl">
             Check back soon
           </p>
           <p className="text-light-gray text-sm md:text-base mt-2">

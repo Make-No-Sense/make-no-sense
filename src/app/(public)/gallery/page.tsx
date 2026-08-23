@@ -32,7 +32,10 @@ export default async function GalleryPage() {
     <div className="bg-char-black min-h-screen w-full">
       {/* Page header */}
       <div className="bg-mid-gray py-16 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl tracking-tight">
+        <h1
+          className="uppercase font-bold text-off-white text-5xl sm:text-7xl lg:text-8xl tracking-tight"
+          style={{ fontFamily: "var(--font-oswald)" }}
+        >
           Gallery
         </h1>
         <div className="mx-auto mt-4 h-1 w-16 bg-truck-red rounded" />

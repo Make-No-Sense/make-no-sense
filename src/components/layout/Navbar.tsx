@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/find-us", label: "Find Us" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
+  { href: "/shop", label: "Shop" },
 ];
 
 export function Navbar() {

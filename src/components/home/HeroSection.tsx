@@ -44,12 +44,15 @@ export function HeroSection({ headline, subheadline, truckImage }: Props) {
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-8 text-center">
         <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm sm:text-base mb-6">
           Nashville Food Truck
         </p>
 
-        <h1 className="font-display uppercase text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6">
+        <h1
+          className="uppercase font-bold text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6"
+          style={{ fontFamily: "var(--font-oswald)" }}
+        >
           {headline ?? 'Make No Sense'}
         </h1>
 

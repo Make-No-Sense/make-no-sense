@@ -19,28 +19,28 @@ const BADGE_COLORS: Record<string, string> = {
 
 export function MenuPreview({ items }: { items: MenuItem[] }) {
   return (
-    <section className="bg-char-black py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-char-black py-12 sm:py-20 px-5 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 sm:mb-14">
           <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm mb-3">
             Featured
           </p>
-          <h2 className="font-display uppercase text-off-white text-4xl sm:text-5xl tracking-tight">
+          <h2 className="font-display uppercase text-off-white text-3xl sm:text-5xl tracking-tight">
             Taste Something Real
           </h2>
         </div>
 
         {/* Grid */}
         {items.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {items.map((item) => (
               <div
                 key={item._id}
                 className="bg-mid-gray rounded overflow-hidden group"
               >
                 {/* Image */}
-                <div className="relative h-56 bg-char-black/60">
+                <div className="relative aspect-[4/3] bg-char-black/60">
                   {item.image?.asset?._ref ? (
                     <Image
                       src={urlForOptimized(item.image).width(600).height(450).url()}
@@ -68,8 +68,8 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
                 </div>
 
                 {/* Info */}
-                <div className="p-5 text-center">
-                  <h3 className="font-display uppercase text-off-white text-xl font-bold leading-tight">
+                <div className="p-3 sm:p-5 text-center">
+                  <h3 className="font-display text-off-white text-sm sm:text-xl font-bold leading-tight">
                     {item.name}
                   </h3>
                 </div>

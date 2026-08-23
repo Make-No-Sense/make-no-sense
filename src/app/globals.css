@@ -29,6 +29,8 @@
 body {
   background-color: #1A1A1A;
   color: #F5F0E8;
+  /* clip prevents horizontal scroll without creating an iOS scroll container (unlike overflow:hidden) */
+  overflow-x: clip;
 }
 
 /* Prevent iOS Safari 300ms tap delay and double-tap zoom on interactive elements */
@@ -36,6 +38,16 @@ button,
 a,
 [role="button"] {
   touch-action: manipulation;
+}
+
+/* Show description text only on sm+ screens — used in MenuItemCard */
+.desc-sm-up {
+  display: none;
+}
+@media (min-width: 640px) {
+  .desc-sm-up {
+    display: block;
+  }
 }
 
 /* Admin dark table — outside any layer so these rules always win.

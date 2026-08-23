@@ -70,8 +70,11 @@ export default async function ContactPage() {
   return (
     <div className="flex flex-col w-full">
       {/* Header */}
-      <section className="bg-slate-900 py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl lg:text-7xl tracking-tight">
+      <section className="bg-slate-900 py-12 sm:py-20 px-5 sm:px-6 lg:px-8 text-center">
+        <h1
+          className="uppercase font-bold text-off-white text-5xl sm:text-7xl lg:text-8xl tracking-tight"
+          style={{ fontFamily: "var(--font-oswald)" }}
+        >
           Get In Touch
         </h1>
         <div className="mx-auto mt-5 h-1 w-20 bg-truck-red rounded" />
@@ -81,9 +84,9 @@ export default async function ContactPage() {
       </section>
 
       {/* Two-column body */}
-      <section className="bg-off-white py-16 px-4 sm:px-6 lg:px-8 flex-1">
+      <section className="bg-off-white py-10 sm:py-16 px-5 sm:px-6 lg:px-8 flex-1">
         <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
 
             {/* Left — Contact Info */}
             <div className="flex flex-col gap-8">
@@ -154,7 +157,7 @@ export default async function ContactPage() {
             </div>
 
             {/* Right — Form */}
-            <div className="bg-white rounded-lg shadow-sm border border-[#e8e0d5] p-8 sm:p-10">
+            <div className="bg-white rounded-lg shadow-sm border border-[#e8e0d5] p-5 sm:p-10">
               <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm mb-3">
                 Send a Message
               </p>

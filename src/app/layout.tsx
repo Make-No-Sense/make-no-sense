@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fredoka, DM_Sans } from "next/font/google";
+import { Fredoka, DM_Sans, Oswald } from "next/font/google";
 import "./globals.css";
 
 const fredoka = Fredoka({
@@ -12,6 +12,12 @@ const fredoka = Fredoka({
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dmsans",
+  display: "swap",
+});
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -52,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fredoka.variable} ${dmSans.variable} h-full antialiased overflow-x-hidden`}
+      className={`${fredoka.variable} ${dmSans.variable} ${oswald.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-char-black font-sans">
         {children}

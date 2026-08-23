@@ -57,8 +57,11 @@ export default async function FindUsPage() {
   return (
     <div className="flex flex-col w-full">
       {/* ── Header ───────────────────────────────────────────────────────── */}
-      <section className="bg-mid-gray py-16 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl lg:text-7xl tracking-tight">
+      <section className="bg-mid-gray py-10 sm:py-16 px-5 sm:px-6 lg:px-8 text-center">
+        <h1
+          className="uppercase font-bold text-off-white text-5xl sm:text-7xl lg:text-8xl tracking-tight"
+          style={{ fontFamily: "var(--font-oswald)" }}
+        >
           Find the Truck
         </h1>
         <div className="mx-auto mt-5 h-1 w-16 bg-truck-red rounded" />
@@ -68,7 +71,7 @@ export default async function FindUsPage() {
       </section>
 
       {/* ── Live Map ──────────────────────────────────────────────────────── */}
-      <section className="bg-char-black py-12 px-4 sm:px-6 lg:px-8">
+      <section className="bg-char-black py-10 px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm mb-6 text-center">
             Live Location
@@ -81,11 +84,11 @@ export default async function FindUsPage() {
       </section>
 
       {/* ── Upcoming Events ───────────────────────────────────────────────── */}
-      <section className="bg-char-black py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-char-black py-12 sm:py-20 px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-14">
-            <h2 className="font-display uppercase text-off-white text-4xl sm:text-5xl tracking-tight">
-              Upcoming Locations
+          <div className="text-center mb-8 sm:mb-14">
+            <h2 className="font-display uppercase text-off-white text-3xl sm:text-5xl tracking-tight">
+              Upcoming Events
             </h2>
           </div>
           <EventsGrid events={events} />
@@ -93,7 +96,7 @@ export default async function FindUsPage() {
       </section>
 
       {/* ── Platform Links ───────────────────────────────────────────────── */}
-      <section className="bg-mid-gray py-12 px-4 sm:px-6 lg:px-8 border-t border-off-white/10">
+      <section className="bg-mid-gray py-10 px-5 sm:px-6 lg:px-8 border-t border-off-white/10">
         <div className="mx-auto max-w-6xl text-center">
           <p className="text-light-gray text-xs sm:text-sm mb-4">Also follow us on</p>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center">

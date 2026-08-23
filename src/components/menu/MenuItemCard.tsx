@@ -20,7 +20,7 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
   return (
     <div className="bg-mid-gray rounded-lg overflow-hidden flex flex-col h-full">
       {/* Image */}
-      <div className="relative aspect-video bg-char-black/40">
+      <div className="relative aspect-[4/3] bg-char-black/40">
         {item.image?.asset?._ref ? (
           <Image
             src={urlForOptimized(item.image).width(500).height(350).url()}
@@ -48,13 +48,13 @@ export function MenuItemCard({ item, priority }: { item: MenuItem; priority?: bo
       </div>
 
       {/* Body */}
-      <div className="p-5 flex flex-col flex-1 gap-2">
-        <h3 className="font-display uppercase text-off-white text-base leading-tight">
+      <div className="p-3 sm:p-4 flex flex-col flex-1 gap-1.5">
+        <h3 className="font-display text-off-white text-sm sm:text-base leading-tight">
           {item.name}
         </h3>
 
         {item.description && (
-          <p className="text-light-gray text-sm leading-relaxed">{item.description}</p>
+          <p className="desc-sm-up text-light-gray text-xs leading-relaxed line-clamp-2">{item.description}</p>
         )}
       </div>
     </div>

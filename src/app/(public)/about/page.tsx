@@ -51,8 +51,11 @@ export default async function AboutPage() {
   return (
     <div className="flex flex-col w-full">
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="bg-mid-gray py-24 px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="font-display uppercase text-off-white text-5xl sm:text-6xl lg:text-7xl tracking-tight">
+      <section className="bg-mid-gray py-14 sm:py-24 px-5 sm:px-6 lg:px-8 text-center">
+        <h1
+          className="uppercase font-bold text-off-white text-5xl sm:text-7xl lg:text-8xl tracking-tight"
+          style={{ fontFamily: "var(--font-oswald)" }}
+        >
           Our Story
         </h1>
         <div className="mx-auto mt-5 h-1 w-16 bg-truck-red rounded" />
@@ -62,14 +65,14 @@ export default async function AboutPage() {
       </section>
 
       {/* ── Brand intro ──────────────────────────────────────────────────── */}
-      <section className="bg-char-black py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-char-black py-12 sm:py-20 px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
-          <blockquote className="font-display uppercase text-off-white text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight">
+          <blockquote className="font-display text-off-white text-2xl sm:text-4xl lg:text-5xl leading-tight">
             &ldquo;We don&apos;t just serve food. We serve an experience.&rdquo;
           </blockquote>
           <div className="mx-auto mt-6 h-1 w-12 bg-truck-red rounded" />
 
-          <div className="mt-10 bg-mid-gray rounded-lg px-8 py-8 sm:px-12 sm:py-10 border-l-4 border-truck-red text-left">
+          <div className="mt-8 bg-mid-gray rounded-lg px-5 py-6 sm:px-12 sm:py-10 border-l-4 border-truck-red text-left">
             <p className="text-off-white text-lg leading-relaxed">
               <span className="font-display uppercase text-truck-red">
                 Make No Sense
@@ -86,13 +89,13 @@ export default async function AboutPage() {
       </section>
 
       {/* ── Value pillars ────────────────────────────────────────────────── */}
-      <section className="bg-mid-gray py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-mid-gray py-12 sm:py-20 px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-14">
+          <div className="text-center mb-8 sm:mb-14">
             <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm mb-3">
               What We Stand For
             </p>
-            <h2 className="font-display uppercase text-off-white text-4xl sm:text-5xl tracking-tight">
+            <h2 className="font-display text-off-white text-3xl sm:text-5xl tracking-tight">
               Built Different
             </h2>
           </div>
@@ -101,13 +104,13 @@ export default async function AboutPage() {
             {PILLARS.map(({ Icon, title, body }) => (
               <div
                 key={title}
-                className="bg-char-black rounded-lg p-8 flex flex-col gap-5"
+                className="bg-char-black rounded-lg p-5 sm:p-8 flex flex-col gap-4 sm:gap-5"
               >
                 <div className="w-12 h-12 rounded-full bg-mid-gray flex items-center justify-center shrink-0">
                   <Icon size={22} className="text-amber-gold" />
                 </div>
                 <div>
-                  <h3 className="font-display uppercase text-off-white text-xl tracking-tight mb-2">
+                  <h3 className="font-display text-off-white text-xl mb-2">
                     {title}
                   </h3>
                   <p className="text-light-gray text-sm leading-relaxed">{body}</p>
@@ -119,15 +122,15 @@ export default async function AboutPage() {
       </section>
 
       {/* ── The Truck ────────────────────────────────────────────────────── */}
-      <section className="bg-char-black py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-char-black py-12 sm:py-20 px-5 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm mb-3">
             The Rig
           </p>
-          <h2 className="font-display uppercase text-off-white text-4xl sm:text-5xl tracking-tight mb-6">
+          <h2 className="font-display text-off-white text-3xl sm:text-5xl tracking-tight mb-6">
             The Truck
           </h2>
-          <div className="mt-2 mb-10 bg-mid-gray rounded-lg px-8 py-8 sm:px-12 sm:py-10 border-l-4 border-truck-red text-left">
+          <div className="mt-2 mb-8 bg-mid-gray rounded-lg px-5 py-6 sm:px-12 sm:py-10 border-l-4 border-truck-red text-left">
             <p className="text-off-white text-lg leading-relaxed">
               The black truck with red and yellow flames isn&apos;t just how we get
               around —{" "}
@@ -162,8 +165,8 @@ export default async function AboutPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────── */}
-      <section className="bg-truck-red py-20 px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="font-display uppercase text-off-white text-5xl sm:text-6xl lg:text-7xl tracking-tight mb-10">
+      <section className="bg-truck-red py-14 sm:py-20 px-5 sm:px-6 lg:px-8 text-center">
+        <h2 className="font-display text-off-white text-4xl sm:text-6xl lg:text-7xl tracking-tight mb-8 sm:mb-10">
           Hungry?
         </h2>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

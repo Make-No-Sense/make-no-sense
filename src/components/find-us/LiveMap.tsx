@@ -36,7 +36,7 @@ export function LiveMap({ events, apiKey }: LiveMapProps) {
             <p className="text-truck-red uppercase tracking-widest text-xs font-semibold">
               Next Stop
             </p>
-            <p className="text-off-white font-display uppercase tracking-tight text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
+            <p className="text-off-white font-display text-sm sm:text-lg md:text-xl lg:text-2xl truncate">
               {next.title}
             </p>
           </div>
