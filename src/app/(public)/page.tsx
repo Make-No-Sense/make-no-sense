@@ -44,6 +44,7 @@ export default async function HomePage() {
         headline={settings?.heroHeadline ?? null}
         subheadline={settings?.heroSubheadline ?? null}
         truckImage={settings?.truckImage ?? null}
+        truckImageMobile={settings?.truckImageMobile ?? null}
       />
       <MenuPreview items={featuredItems ?? []} />
       <NextEventTeaser event={nextEvent} />

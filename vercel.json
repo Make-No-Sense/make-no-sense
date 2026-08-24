@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/sff-check",
       "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/staff-hours-summary",
+      "schedule": "0 14 * * 1"
     }
   ]
 }

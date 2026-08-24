@@ -2,8 +2,11 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
 export async function updateStock(id: string, formData: FormData) {
+  await requireAdminSession()
+
   const quantity = parseFloat(formData.get('quantity') as string)
   const reorder_threshold = parseFloat(formData.get('reorder_threshold') as string)
 

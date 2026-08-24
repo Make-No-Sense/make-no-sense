@@ -11,10 +11,27 @@ export const siteSettingsQuery = defineQuery(`
     facebookUrl,
     googleCalendarId,
     truckImage {
-      asset {
-        _ref,
-        _type
-      },
+      asset { _ref, _type },
+      crop,
+      hotspot,
+      alt
+    },
+    truckImageDesktop {
+      asset { _ref, _type },
+      crop,
+      hotspot,
+      alt
+    },
+    truckImageTablet {
+      asset { _ref, _type },
+      crop,
+      hotspot,
+      alt
+    },
+    truckImageMobile {
+      asset { _ref, _type },
+      crop,
+      hotspot,
       alt
     }
   }
@@ -69,6 +86,7 @@ export const featuredMenuItemsQuery = defineQuery(`
   *[_type == "menuItem" && featured == true && available != false][0...3] {
     _id,
     name,
+    description,
     price,
     badge,
     image {

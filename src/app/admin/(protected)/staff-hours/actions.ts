@@ -2,12 +2,15 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
 function revalidate() {
   revalidatePath('/admin/staff-hours')
 }
 
 export async function startShift(formData: FormData) {
+  await requireAdminSession()
+
   const staff_name = (formData.get('staff_name') as string).trim()
 
   const { error } = await supabaseAdmin
@@ -20,6 +23,8 @@ export async function startShift(formData: FormData) {
 }
 
 export async function endShift(id: string) {
+  await requireAdminSession()
+
   const { data: shift, error: fetchError } = await supabaseAdmin
     .from('shifts')
     .select('shift_start')
@@ -47,6 +52,8 @@ export async function endShift(id: string) {
 }
 
 export async function deleteShift(id: string) {
+  await requireAdminSession()
+
   const { error } = await supabaseAdmin
     .from('shifts')
     .delete()
@@ -58,6 +65,8 @@ export async function deleteShift(id: string) {
 }
 
 export async function updateShift(id: string, formData: FormData) {
+  await requireAdminSession()
+
   const staff_name = (formData.get('staff_name') as string).trim()
   const shift_start = formData.get('shift_start') as string
   const shift_end = (formData.get('shift_end') as string) || null

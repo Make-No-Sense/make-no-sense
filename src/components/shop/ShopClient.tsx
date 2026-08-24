@@ -15,36 +15,42 @@ const PRODUCTS = [
     id: "sig-sauce",
     name: "MNS Signature Sauce",
     price: 8.0,
+    size: "8 oz bottle",
     description: "Our legendary house sauce. The secret behind every burger.",
   },
   {
     id: "hot-honey",
     name: "MNS Hot Honey Sauce",
     price: 8.0,
+    size: "8 oz bottle",
     description: "Sweet heat in a bottle. Drizzle it on everything.",
   },
   {
     id: "fry-season",
     name: "MNS Fry Seasoning",
     price: 6.0,
+    size: "4 oz shaker",
     description: "The seasoning that makes our fries unforgettable. Now for your kitchen.",
   },
   {
     id: "punch-watermelon",
     name: "MNS Punch — Watermelon",
     price: 12.0,
+    size: "16 oz bottle",
     description: "Tropical Paradise On Ice. Watermelon edition.",
   },
   {
     id: "punch-mango",
     name: "MNS Punch — Mango",
     price: 12.0,
+    size: "16 oz bottle",
     description: "Tropical Paradise On Ice. Mango edition.",
   },
   {
     id: "punch-lemony-blue",
     name: "MNS Punch — Lemony Blue",
     price: 12.0,
+    size: "16 oz bottle",
     description: "Lemonade, coconut, and blue curacao. Famous MNS Punch.",
   },
 ];
@@ -57,13 +63,27 @@ interface CartItem {
 export function ShopClient() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  const selectedProduct = PRODUCTS.find((p) => p.id === selectedId) ?? null;
+
+  // Lock body scroll when cart or modal is open
   useEffect(() => {
-    document.body.style.overflow = cartOpen ? "hidden" : "";
+    document.body.style.overflow = cartOpen || selectedId ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [cartOpen]);
+  }, [cartOpen, selectedId]);
+
+  // Close modal on Escape
+  useEffect(() => {
+    if (!selectedId) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedId(null);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [selectedId]);
 
   function addToCart(productId: string) {
     setCart((prev) => {
@@ -156,24 +176,25 @@ export function ShopClient() {
 
       {/* ── Product Grid ─────────────────────────────────────────────── */}
       <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {PRODUCTS.map((product) => (
             <div
               key={product.id}
-              className="rounded-xl overflow-hidden flex flex-col"
+              className="rounded-xl overflow-hidden flex flex-col cursor-pointer"
               style={{
                 backgroundColor: CREAM,
                 border: "1px solid #DDD5C8",
                 boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
               }}
+              onClick={() => setSelectedId(product.id)}
             >
-              {/* MNS placeholder image area */}
+              {/* MNS placeholder image */}
               <div
-                className="flex items-center justify-center"
-                style={{ height: "220px", backgroundColor: NAVY }}
+                className="relative flex items-center justify-center"
+                style={{ aspectRatio: "4/3", backgroundColor: NAVY }}
               >
                 <span
-                  className="font-display text-6xl font-bold tracking-widest select-none"
+                  className="font-display text-4xl sm:text-6xl font-bold tracking-widest select-none"
                   style={{ color: GOLD_MUTED, opacity: 0.55 }}
                 >
                   MNS
@@ -181,35 +202,132 @@ export function ShopClient() {
               </div>
 
               {/* Card body */}
-              <div className="p-5 sm:p-6 flex flex-col flex-1 gap-2">
+              <div className="p-3 sm:p-6 flex flex-col flex-1 gap-1.5">
                 <h3
-                  className="font-bold leading-tight text-lg sm:text-xl"
+                  className="font-bold leading-tight text-sm sm:text-xl"
                   style={{ color: NAVY, fontFamily: "var(--font-oswald)" }}
                 >
                   {product.name}
                 </h3>
-                <p className="text-sm leading-relaxed flex-1" style={{ color: SLATE }}>
+                <p
+                  className="desc-sm-up text-xs sm:text-sm leading-relaxed flex-1"
+                  style={{ color: SLATE }}
+                >
                   {product.description}
                 </p>
-                <p
-                  className="text-lg font-bold mt-1"
-                  style={{ color: RED, fontFamily: "'Courier New', monospace" }}
-                >
-                  ${product.price.toFixed(2)}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => addToCart(product.id)}
-                  className="mt-2 py-3 font-display text-sm font-semibold rounded transition-opacity hover:opacity-80"
-                  style={{ backgroundColor: NAVY, color: CREAM }}
-                >
-                  Add to Cart
-                </button>
+
+                {/* Price + quick-add row */}
+                <div className="flex items-center justify-between mt-1">
+                  <p
+                    className="text-sm sm:text-lg font-bold"
+                    style={{ color: RED, fontFamily: "'Courier New', monospace" }}
+                  >
+                    ${product.price.toFixed(2)}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart(product.id);
+                    }}
+                    className="flex items-center justify-center w-8 h-8 rounded-full shrink-0 transition-opacity hover:opacity-75"
+                    style={{ backgroundColor: NAVY, color: CREAM }}
+                    aria-label={`Add ${product.name} to cart`}
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      {/* ── Product Modal ─────────────────────────────────────────────── */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0"
+            style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
+            onClick={() => setSelectedId(null)}
+          />
+
+          {/* Modal panel */}
+          <div
+            className="relative w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl"
+            style={{ backgroundColor: CREAM, maxHeight: "90vh", overflowY: "auto" }}
+          >
+            {/* Image */}
+            <div
+              className="flex items-center justify-center"
+              style={{ aspectRatio: "4/3", backgroundColor: NAVY }}
+            >
+              <span
+                className="font-display text-7xl sm:text-8xl font-bold tracking-widest select-none"
+                style={{ color: GOLD_MUTED, opacity: 0.55 }}
+              >
+                MNS
+              </span>
+            </div>
+
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setSelectedId(null)}
+              className="absolute top-3 right-3 flex items-center justify-center w-9 h-9 rounded-full"
+              style={{ backgroundColor: "rgba(0,0,0,0.45)", color: CREAM }}
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Content */}
+            <div className="p-6 sm:p-8">
+              <div className="flex items-start justify-between gap-4">
+                <h2
+                  className="font-bold leading-tight text-2xl sm:text-3xl"
+                  style={{ color: NAVY, fontFamily: "var(--font-oswald)" }}
+                >
+                  {selectedProduct.name}
+                </h2>
+                <p
+                  className="font-bold text-xl sm:text-2xl shrink-0"
+                  style={{ color: RED, fontFamily: "'Courier New', monospace" }}
+                >
+                  ${selectedProduct.price.toFixed(2)}
+                </p>
+              </div>
+
+              <p
+                className="mt-1 text-xs font-semibold uppercase tracking-wider"
+                style={{ color: SLATE }}
+              >
+                {selectedProduct.size}
+              </p>
+
+              <p
+                className="mt-4 text-sm sm:text-base leading-relaxed"
+                style={{ color: SLATE }}
+              >
+                {selectedProduct.description}
+              </p>
+
+              <button
+                type="button"
+                onClick={() => {
+                  addToCart(selectedProduct.id);
+                  setSelectedId(null);
+                }}
+                className="mt-6 w-full py-4 font-display uppercase tracking-wider text-sm font-semibold rounded transition-opacity hover:opacity-85"
+                style={{ backgroundColor: NAVY, color: CREAM }}
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Cart Drawer ───────────────────────────────────────────────── */}
       {cartOpen && (
@@ -259,10 +377,7 @@ export function ShopClient() {
               {cart.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
                   <ShoppingCart size={40} color={SLATE} opacity={0.35} />
-                  <p
-                    className="font-display text-sm"
-                    style={{ color: SLATE }}
-                  >
+                  <p className="font-display text-sm" style={{ color: SLATE }}>
                     Your cart is empty
                   </p>
                   <button
@@ -284,14 +399,10 @@ export function ShopClient() {
                         className="py-4 flex items-start gap-3"
                         style={{ borderBottom: "1px solid #DDD5C8" }}
                       >
-                        {/* Name + line price */}
                         <div className="flex-1 min-w-0">
                           <p
                             className="font-bold leading-snug text-sm"
-                            style={{
-                              color: NAVY,
-                              fontFamily: "var(--font-oswald)",
-                            }}
+                            style={{ color: NAVY, fontFamily: "var(--font-oswald)" }}
                           >
                             {product.name}
                           </p>
@@ -303,7 +414,6 @@ export function ShopClient() {
                           </p>
                         </div>
 
-                        {/* Qty controls */}
                         <div className="flex items-center gap-1.5 shrink-0">
                           <button
                             type="button"
@@ -355,7 +465,6 @@ export function ShopClient() {
                   borderTop: "1px solid #DDD5C8",
                 }}
               >
-                {/* Subtotal */}
                 <div className="flex items-center justify-between">
                   <span
                     className="font-display text-sm font-semibold"
@@ -363,26 +472,21 @@ export function ShopClient() {
                   >
                     Subtotal
                   </span>
-                  <span
-                    className="font-mono font-bold text-base"
-                    style={{ color: NAVY }}
-                  >
+                  <span className="font-mono font-bold text-base" style={{ color: NAVY }}>
                     ${subtotal.toFixed(2)}
                   </span>
                 </div>
 
-                {/* Minimum order notice */}
                 {!canCheckout && (
                   <p
                     className="text-xs text-center rounded py-2 px-3"
                     style={{ backgroundColor: "#FEF3C7", color: "#92400E" }}
                   >
-                    $25.00 minimum order — add ${(MIN_ORDER - subtotal).toFixed(2)}{" "}
-                    more to checkout
+                    $25.00 minimum order — add ${(MIN_ORDER - subtotal).toFixed(2)} more
+                    to checkout
                   </p>
                 )}
 
-                {/* Checkout CTA */}
                 {canCheckout ? (
                   <Link
                     href="/shop/checkout"

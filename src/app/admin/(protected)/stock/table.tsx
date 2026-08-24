@@ -13,7 +13,7 @@ type StockRow = {
   inventory_item_id: string
   inventory_items: {
     name: string
-    category: string
+    category: string | null
     unit: string
   }
 }
@@ -95,7 +95,7 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
                   className="border-t border-white/5 transition-all hover:brightness-125"
                 >
                   <td className="px-6 py-4 text-white font-medium">{row.inventory_items.name}</td>
-                  <td className="px-6 py-4 text-white/60 capitalize">{row.inventory_items.category}</td>
+                  <td className="px-6 py-4 text-white/60 capitalize">{row.inventory_items.category ?? '—'}</td>
                   <td className="px-6 py-4 text-white/60">{row.inventory_items.unit}</td>
                   <td className="px-6 py-4 text-white font-mono">{row.quantity}</td>
                   <td className="px-6 py-4 text-white/60 font-mono">{row.reorder_threshold}</td>

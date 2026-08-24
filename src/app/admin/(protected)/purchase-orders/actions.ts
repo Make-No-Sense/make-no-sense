@@ -2,15 +2,25 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
-type StockItem = { inventory_item_id: string; quantity: number }
+type SupabaseActionError = {
+  code?: string
+  message?: string
+}
 
 function revalidate() {
   revalidatePath('/admin/purchase-orders')
   revalidatePath('/admin/stock')
 }
 
-async function addItemsToStock(items: StockItem[]) {
+function isMissingRpc(error: SupabaseActionError | null) {
+  return error?.code === 'PGRST202'
+}
+
+async function fallbackAddItemsToStock(
+  items: Array<{ inventory_item_id: string; quantity: number }>
+) {
   for (const item of items) {
     const { data: stock } = await supabaseAdmin
       .from('stock_levels')
@@ -19,13 +29,15 @@ async function addItemsToStock(items: StockItem[]) {
       .single()
 
     if (stock) {
-      await supabaseAdmin
+      const { error } = await supabaseAdmin
         .from('stock_levels')
         .update({
           quantity: stock.quantity + item.quantity,
           updated_at: new Date().toISOString(),
         })
         .eq('inventory_item_id', item.inventory_item_id)
+
+      if (error) throw new Error(error.message)
     }
   }
 }
@@ -36,54 +48,84 @@ export async function createOrder(data: {
   notes: string | null
   items: Array<{ inventory_item_id: string; quantity: number; unit_cost: number }>
 }) {
+  await requireAdminSession()
+
   const { supplier, status, notes, items } = data
-  const total = items.reduce((sum, i) => sum + i.quantity * i.unit_cost, 0)
 
-  const { data: order, error: orderError } = await supabaseAdmin
-    .from('purchase_orders')
-    .insert({ supplier, status, notes, total })
-    .select('id')
-    .single()
+  const { error } = await supabaseAdmin.rpc('admin_create_purchase_order', {
+    p_supplier: supplier,
+    p_status: status,
+    p_notes: notes,
+    p_items: items,
+  })
 
-  if (orderError) throw new Error(orderError.message)
+  if (error && !isMissingRpc(error)) throw new Error(error.message)
 
-  const { error: itemsError } = await supabaseAdmin
-    .from('purchase_order_items')
-    .insert(items.map((i) => ({ ...i, order_id: order.id })))
+  if (error) {
+    const total = items.reduce((sum, i) => sum + i.quantity * i.unit_cost, 0)
 
-  if (itemsError) throw new Error(itemsError.message)
+    const { data: order, error: orderError } = await supabaseAdmin
+      .from('purchase_orders')
+      .insert({ supplier, status, notes, total })
+      .select('id')
+      .single()
 
-  if (status === 'received') {
-    await addItemsToStock(items)
+    if (orderError) throw new Error(orderError.message)
+
+    const { error: itemsError } = await supabaseAdmin
+      .from('purchase_order_items')
+      .insert(items.map((i) => ({ ...i, order_id: order.id })))
+
+    if (itemsError) throw new Error(itemsError.message)
+
+    if (status === 'received') {
+      await fallbackAddItemsToStock(items)
+    }
   }
 
   revalidate()
 }
 
 export async function updateOrderStatus(id: string, newStatus: string) {
-  const { data: order, error: fetchError } = await supabaseAdmin
-    .from('purchase_orders')
-    .select('status, purchase_order_items(inventory_item_id, quantity)')
-    .eq('id', id)
-    .single()
+  await requireAdminSession()
 
-  if (fetchError) throw new Error(fetchError.message)
+  const { error } = await supabaseAdmin.rpc(
+    'admin_update_purchase_order_status',
+    {
+      p_id: id,
+      p_status: newStatus,
+    }
+  )
 
-  if (newStatus === 'received' && order.status !== 'received') {
-    await addItemsToStock(order.purchase_order_items as StockItem[])
+  if (error && !isMissingRpc(error)) throw new Error(error.message)
+
+  if (error) {
+    const { data: order, error: fetchError } = await supabaseAdmin
+      .from('purchase_orders')
+      .select('status, purchase_order_items(inventory_item_id, quantity)')
+      .eq('id', id)
+      .single()
+
+    if (fetchError) throw new Error(fetchError.message)
+
+    if (newStatus === 'received' && order.status !== 'received') {
+      await fallbackAddItemsToStock(order.purchase_order_items)
+    }
+
+    const { error: updateError } = await supabaseAdmin
+      .from('purchase_orders')
+      .update({ status: newStatus })
+      .eq('id', id)
+
+    if (updateError) throw new Error(updateError.message)
   }
-
-  const { error } = await supabaseAdmin
-    .from('purchase_orders')
-    .update({ status: newStatus })
-    .eq('id', id)
-
-  if (error) throw new Error(error.message)
 
   revalidate()
 }
 
 export async function deleteOrder(id: string) {
+  await requireAdminSession()
+
   const { error } = await supabaseAdmin
     .from('purchase_orders')
     .delete()

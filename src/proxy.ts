@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isValidAdminSessionToken } from "@/lib/admin-session";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Login page itself must never be protected — would cause redirect loop
@@ -10,7 +11,7 @@ export function proxy(request: NextRequest) {
 
   const session = request.cookies.get("admin_session")?.value;
 
-  if (session !== "authenticated") {
+  if (!(await isValidAdminSessionToken(session))) {
     const loginUrl = new URL("/admin/login", request.url);
     return NextResponse.redirect(loginUrl);
   }

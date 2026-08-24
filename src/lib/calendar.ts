@@ -10,6 +10,26 @@ export interface CalendarEvent {
   visibility?: string;
 }
 
+interface GoogleCalendarApiEvent {
+  id?: string;
+  summary?: string;
+  start?: {
+    dateTime?: string;
+    date?: string;
+  };
+  end?: {
+    dateTime?: string;
+    date?: string;
+  };
+  location?: string;
+  description?: string;
+  visibility?: string;
+}
+
+interface GoogleCalendarApiResponse {
+  items?: GoogleCalendarApiEvent[];
+}
+
 // Strips internal prefixes like "MNS Lunch - " and returns the venue name
 function parseVenue(summary: string): string {
   const idx = summary.indexOf(" - ");
@@ -108,15 +128,15 @@ export async function getUpcomingEvents(
       return [];
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as GoogleCalendarApiResponse;
 
     if (!data.items || !Array.isArray(data.items)) {
       console.warn("[calendar] No items in response");
       return [];
     }
 
-    return data.items.map((event: any) => ({
-      id: event.id,
+    return data.items.map((event) => ({
+      id: event.id || "",
       summary: event.summary || "",
       start: event.start?.dateTime || event.start?.date || "",
       end: event.end?.dateTime || event.end?.date || "",

@@ -2,12 +2,15 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
 function revalidate() {
   revalidatePath('/admin/expenses')
 }
 
 export async function addExpense(formData: FormData) {
+  await requireAdminSession()
+
   const category = formData.get('category') as string
   const description = (formData.get('description') as string).trim()
   const amount = parseFloat(formData.get('amount') as string)
@@ -23,6 +26,8 @@ export async function addExpense(formData: FormData) {
 }
 
 export async function deleteExpense(id: string) {
+  await requireAdminSession()
+
   const { error } = await supabaseAdmin
     .from('expenses')
     .delete()
@@ -34,6 +39,8 @@ export async function deleteExpense(id: string) {
 }
 
 export async function updateExpense(id: string, formData: FormData) {
+  await requireAdminSession()
+
   const category = formData.get('category') as string
   const description = (formData.get('description') as string).trim()
   const amount = parseFloat(formData.get('amount') as string)

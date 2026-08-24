@@ -4,6 +4,25 @@ import { menuCategoriesQuery, menuItemsByCategoryQuery } from "@/sanity/lib/quer
 import { CategoryFilter } from "@/components/menu/CategoryFilter";
 import { MenuItemCard } from "@/components/menu/MenuItemCard";
 
+interface MenuCategory {
+  _id: string;
+  name: string;
+  slug: string;
+}
+
+interface MenuItem {
+  _id: string;
+  name: string;
+  description: string | null;
+  price: number | null;
+  badge: string | null;
+  categoryId: string | null;
+  image: {
+    asset: { _ref: string } | null;
+    alt: string | null;
+  } | null;
+}
+
 export const revalidate = 60;
 
 export const metadata: Metadata = {
@@ -28,8 +47,8 @@ export const metadata: Metadata = {
 
 export default async function MenuPage() {
   const [categories, items] = await Promise.all([
-    client.fetch(menuCategoriesQuery),
-    client.fetch(menuItemsByCategoryQuery),
+    client.fetch<MenuCategory[]>(menuCategoriesQuery),
+    client.fetch<MenuItem[]>(menuItemsByCategoryQuery),
   ]);
 
   const hasContent = categories.length > 0 && items.length > 0;
@@ -53,8 +72,8 @@ export default async function MenuPage() {
       {/* Sticky category filter — only show categories that have items */}
       {categories.length > 0 && (
         <CategoryFilter
-          categories={categories.filter((cat: any) =>
-            items.some((item: any) => item.categoryId === cat._id)
+          categories={categories.filter((cat) =>
+            items.some((item) => item.categoryId === cat._id)
           )}
         />
       )}
@@ -69,9 +88,9 @@ export default async function MenuPage() {
           </div>
         )}
 
-        {categories.map((category: any) => {
+        {categories.map((category) => {
           const categoryItems = items.filter(
-            (item: any) => item.categoryId === category._id
+            (item) => item.categoryId === category._id
           );
 
           if (categoryItems.length === 0) return null;
@@ -91,7 +110,7 @@ export default async function MenuPage() {
 
               {/* Items grid */}
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
-                {categoryItems.map((item: any, idx: number) => (
+                {categoryItems.map((item, idx) => (
                   <MenuItemCard key={item._id} item={item} priority={idx === 0} />
                 ))}
               </div>

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
 
-  const { name, email, phone, message, isCatering } = body as Record<string, unknown>
+  const { name, email, phone, message, isBooking } = body as Record<string, unknown>
 
   if (!name || typeof name !== 'string' || !name.trim()) {
     return NextResponse.json({ error: 'Name is required' }, { status: 400 })
@@ -23,17 +23,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Message is required' }, { status: 400 })
   }
 
-  const subject = isCatering
-    ? `[MNS Catering Inquiry] ${name.trim()}`
+  const subject = isBooking
+    ? `[MNS Booking Inquiry] ${name.trim()}`
     : `[MNS Contact] ${name.trim()}`
 
   const html = `
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; color: #1A1A1A;">
       <h2 style="background:#C41E1E; color:#fff; padding:16px 24px; margin:0; font-size:18px;">
-        ${isCatering ? 'Catering Inquiry' : 'New Contact Message'} — Make No Sense
+        ${isBooking ? 'Booking Inquiry' : 'New Contact Message'} — Make No Sense
       </h2>
       <div style="padding:24px; background:#f9f9f9; border:1px solid #e0e0e0;">
-        ${isCatering ? '<p style="display:inline-block;background:#C41E1E;color:#fff;padding:4px 10px;font-size:12px;letter-spacing:.05em;margin:0 0 16px;">CATERING INQUIRY</p>' : ''}
+        ${isBooking ? '<p style="display:inline-block;background:#C41E1E;color:#fff;padding:4px 10px;font-size:12px;letter-spacing:.05em;margin:0 0 16px;">BOOKING INQUIRY</p>' : ''}
         <table style="width:100%; border-collapse:collapse;">
           <tr><td style="padding:8px 0; font-weight:600; width:100px; color:#555; vertical-align:top;">Name</td><td style="padding:8px 0;">${name.trim()}</td></tr>
           <tr><td style="padding:8px 0; font-weight:600; color:#555; vertical-align:top;">Email</td><td style="padding:8px 0;"><a href="mailto:${email.trim()}" style="color:#C41E1E;">${email.trim()}</a></td></tr>

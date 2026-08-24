@@ -11,27 +11,47 @@ interface Props {
   headline: string | null
   subheadline: string | null
   truckImage: SanityImage | null
+  truckImageMobile: SanityImage | null
 }
 
-export function HeroSection({ headline, subheadline, truckImage }: Props) {
-  const hasImage = Boolean(truckImage?.asset)
+export function HeroSection({ headline, subheadline, truckImage, truckImageMobile }: Props) {
+  const desktopImg = truckImage
+  const mobileImg = truckImageMobile ?? truckImage
 
   return (
-    <section className="relative min-h-screen bg-char-black flex items-center justify-center overflow-hidden">
-      {/* Background photo */}
-      {hasImage && (
+    <section
+      className="relative bg-char-black overflow-hidden flex flex-col justify-end"
+      style={{ minHeight: 'calc(100dvh - 64px)' }}
+    >
+      {/* Desktop/tablet image (hidden on mobile) */}
+      {desktopImg?.asset && (
         <Image
-          src={urlForOptimized(truckImage!).width(1920).height(1080).url()}
-          alt={truckImage!.alt ?? 'Make No Sense food truck'}
+          src={urlForOptimized(desktopImg).width(1920).height(1080).url()}
+          alt={desktopImg.alt ?? 'Make No Sense food truck'}
           fill
           priority
-          className="object-cover"
+          className="object-cover hidden sm:block"
           sizes="100vw"
         />
       )}
 
-      {/* Gradient overlay — dark at top/bottom, lighter in the middle so the photo shows through */}
-      <div className="absolute inset-0 bg-gradient-to-b from-char-black/90 via-char-black/60 to-char-black/80" />
+      {/* Mobile image (hidden on sm+) */}
+      {mobileImg?.asset && (
+        <Image
+          src={urlForOptimized(mobileImg).width(900).height(1600).url()}
+          alt={mobileImg.alt ?? 'Make No Sense food truck'}
+          fill
+          priority
+          className="object-cover object-center block sm:hidden"
+          sizes="100vw"
+        />
+      )}
+
+      {/* Gradient */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to top, #1A1A1A 0%, rgba(26,26,26,0.55) 45%, transparent 100%)' }}
+      />
 
       {/* Grain texture overlay */}
       <div
@@ -44,50 +64,36 @@ export function HeroSection({ headline, subheadline, truckImage }: Props) {
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-5 sm:px-6 lg:px-8 text-center">
-        <p className="font-display text-truck-red uppercase tracking-[0.3em] text-sm sm:text-base mb-6">
-          Nashville Food Truck
-        </p>
-
-        <h1
-          className="uppercase font-bold text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-6"
-          style={{ fontFamily: "var(--font-oswald)" }}
-        >
-          {headline ?? 'Make No Sense'}
-        </h1>
-
-        {subheadline && (
-          <p className="text-off-white/70 text-lg sm:text-xl max-w-xl mx-auto mb-10 leading-relaxed">
-            {subheadline}
-          </p>
-        )}
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/menu"
-            className="inline-flex items-center justify-center px-8 py-4 font-display uppercase tracking-wider text-sm border-2 border-off-white text-off-white hover:bg-off-white hover:text-char-black transition-colors rounded"
+      <div className="relative z-10 w-full px-5 sm:px-6 lg:px-8 text-center" style={{ paddingBottom: '56px' }}>
+        <div className="mx-auto max-w-4xl">
+          <h1
+            className="uppercase font-bold text-off-white leading-none tracking-tight text-5xl sm:text-7xl lg:text-8xl mb-4 sm:mb-6"
+            style={{ fontFamily: "var(--font-oswald)" }}
           >
-            See the Menu
-          </Link>
-          <Link
-            href="/find-us"
-            className="inline-flex items-center justify-center px-8 py-4 font-display uppercase tracking-wider text-sm bg-truck-red text-off-white hover:bg-flame-orange transition-colors rounded"
-          >
-            Find the Truck
-          </Link>
-        </div>
+            {headline ?? 'Make No Sense'}
+          </h1>
 
-        {/* Scroll nudge — inline on mobile, hidden on sm+ (absolute version takes over) */}
-        <div className="flex sm:hidden flex-col items-center gap-2 text-off-white/40 mt-10">
-          <span className="font-display text-xs uppercase tracking-widest">Scroll</span>
-          <div className="w-px h-8 bg-off-white/30" />
-        </div>
-      </div>
+          {subheadline && (
+            <p className="text-off-white/70 text-sm sm:text-lg max-w-xl mx-auto mb-5 sm:mb-8 leading-relaxed">
+              {subheadline}
+            </p>
+          )}
 
-      {/* Scroll nudge — absolute on sm+ only */}
-      <div className="hidden sm:flex absolute bottom-14 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-off-white/40">
-        <span className="font-display text-xs uppercase tracking-widest">Scroll</span>
-        <div className="w-px h-8 bg-off-white/30" />
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
+            <Link
+              href="/menu"
+              className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-display uppercase tracking-wider text-xs sm:text-sm border-2 border-off-white text-off-white hover:bg-off-white hover:text-char-black transition-colors rounded"
+            >
+              See the Menu
+            </Link>
+            <Link
+              href="/find-us"
+              className="inline-flex items-center justify-center px-6 py-3 sm:px-8 sm:py-4 font-display uppercase tracking-wider text-xs sm:text-sm bg-truck-red text-off-white hover:bg-flame-orange transition-colors rounded"
+            >
+              Find the Truck
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   )

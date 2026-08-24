@@ -9,7 +9,7 @@ type InventoryItem = {
   id: string
   name: string
   item_type: string
-  category: string
+  category: string | null
   unit: string
   cost_per_unit: number
 }
@@ -24,7 +24,7 @@ const ITEM_TYPES = [
 
 const CATEGORIES = [
   'protein', 'bread', 'produce', 'dairy',
-  'condiment', 'drink', 'packaging', 'other',
+  'condiment', 'drink', 'other',
 ]
 
 type ModalState =
@@ -35,7 +35,18 @@ type ModalState =
 export function InventoryTable({ items }: { items: InventoryItem[] }) {
   const router = useRouter()
   const [modal, setModal] = useState<ModalState>({ mode: 'closed' })
+  const [selectedItemType, setSelectedItemType] = useState('ingredient')
   const [isPending, startTransition] = useTransition()
+
+  function openAddModal() {
+    setSelectedItemType('ingredient')
+    setModal({ mode: 'add' })
+  }
+
+  function openEditModal(item: InventoryItem) {
+    setSelectedItemType(item.item_type)
+    setModal({ mode: 'edit', item })
+  }
 
   function closeModal() {
     setModal({ mode: 'closed' })
@@ -72,7 +83,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
           Inventory
         </h1>
         <button
-          onClick={() => setModal({ mode: 'add' })}
+          onClick={openAddModal}
           className="flex items-center gap-2 bg-[#B83232] hover:bg-[#9a2a2a] transition-colors text-white font-display uppercase tracking-wide text-sm px-4 py-2 rounded-lg"
         >
           <Plus size={16} />
@@ -110,13 +121,13 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                   <td className="px-6 py-4 text-white/60 capitalize">
                     {ITEM_TYPES.find(t => t.value === item.item_type)?.label ?? item.item_type}
                   </td>
-                  <td className="px-6 py-4 text-white/60 capitalize">{item.category}</td>
+                  <td className="px-6 py-4 text-white/60 capitalize">{item.category ?? '—'}</td>
                   <td className="px-6 py-4 text-white/60">{item.unit}</td>
                   <td className="px-6 py-4 text-white font-mono">${item.cost_per_unit.toFixed(2)}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => setModal({ mode: 'edit', item })}
+                        onClick={() => openEditModal(item)}
                         className="p-2 rounded text-white/40 hover:text-white hover:bg-white/10 transition-colors"
                         aria-label="Edit"
                       >
@@ -168,6 +179,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                   name="item_type"
                   required
                   defaultValue={editingItem?.item_type ?? 'ingredient'}
+                  onChange={(e) => setSelectedItemType(e.target.value)}
                   className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40 bg-white"
                 >
                   {ITEM_TYPES.map((t) => (
@@ -180,11 +192,11 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 <label className="font-display text-xs uppercase tracking-wide text-[#1B3A5C]">Category</label>
                 <select
                   name="category"
-                  required
+                  disabled={selectedItemType !== 'ingredient'}
                   defaultValue={editingItem?.category ?? ''}
-                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40 bg-white"
+                  className="border border-black/10 rounded-lg px-3 py-2 text-sm text-[#1B3A5C] focus:outline-none focus:ring-2 focus:ring-[#B83232]/40 bg-white disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed"
                 >
-                  <option value="" disabled>Select a category</option>
+                  <option value="">No category</option>
                   {CATEGORIES.map((c) => (
                     <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
                   ))}

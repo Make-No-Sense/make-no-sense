@@ -5,16 +5,17 @@ import { urlForOptimized } from '@/sanity/lib/image'
 interface MenuItem {
   _id: string
   name: string
+  description: string | null
   price: number | null
   badge: string | null
   category: string | null
   image: { asset: { _ref: string } | null; alt: string | null } | null
 }
 
-const BADGE_COLORS: Record<string, string> = {
+const BADGE_STYLES: Record<string, string> = {
   New: 'bg-flame-orange text-off-white',
-  'Fan Favorite': 'bg-truck-red text-off-white',
-  Limited: 'bg-mid-gray text-off-white border border-off-white/20',
+  'Best Seller': 'bg-truck-red text-off-white',
+  Limited: 'bg-char-black/80 text-off-white border border-off-white/20 backdrop-blur-sm',
 }
 
 export function MenuPreview({ items }: { items: MenuItem[] }) {
@@ -35,45 +36,53 @@ export function MenuPreview({ items }: { items: MenuItem[] }) {
         {items.length > 0 ? (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {items.map((item) => (
-              <div
+              <article
                 key={item._id}
-                className="bg-mid-gray rounded overflow-hidden group"
+                className="group bg-mid-gray rounded-xl overflow-hidden flex flex-col h-full border border-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/10 hover:shadow-2xl hover:shadow-black/30"
               >
                 {/* Image */}
-                <div className="relative aspect-[4/3] bg-char-black/60">
+                <div className="relative aspect-[4/3] overflow-hidden bg-char-black">
                   {item.image?.asset?._ref ? (
                     <Image
-                      src={urlForOptimized(item.image).width(600).height(450).url()}
+                      src={urlForOptimized(item.image).width(900).height(675).fit('crop').url()}
                       alt={item.image.alt ?? item.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="font-display text-off-white/20 text-5xl uppercase">
+                    <div className="absolute inset-0 flex items-center justify-center bg-char-black">
+                      <span className="font-display text-off-white/15 text-4xl uppercase tracking-widest">
                         MNS
                       </span>
                     </div>
                   )}
 
-                  {/* Badge */}
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/30 to-transparent" />
+
                   {item.badge && (
                     <span
-                      className={`absolute top-3 left-3 px-2 py-1 font-display text-xs uppercase tracking-wider rounded ${BADGE_COLORS[item.badge] ?? 'bg-light-gray text-off-white'}`}
+                      className={`absolute top-3 left-3 z-10 px-2.5 py-1 font-display text-[11px] uppercase tracking-wider rounded-md shadow-md ${BADGE_STYLES[item.badge] ?? 'bg-light-gray text-off-white'}`}
                     >
                       {item.badge}
                     </span>
                   )}
                 </div>
 
-                {/* Info */}
-                <div className="p-3 sm:p-5 text-center">
-                  <h3 className="font-display text-off-white text-sm sm:text-xl font-bold leading-tight">
-                    {item.name}
-                  </h3>
+                {/* Body */}
+                <div className="p-4 flex flex-col flex-1 gap-1.5">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-display text-off-white text-base leading-tight">
+                      {item.name}
+                    </h3>
+                    {item.price !== null && (
+                      <span className="font-display text-off-white text-sm whitespace-nowrap">
+                        ${item.price.toFixed(2)}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         ) : (

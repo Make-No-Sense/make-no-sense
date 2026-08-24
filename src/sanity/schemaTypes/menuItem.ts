@@ -67,7 +67,7 @@ export const menuItem = defineType({
       options: {
         list: [
           { title: 'New', value: 'New' },
-          { title: 'Fan Favorite', value: 'Fan Favorite' },
+          { title: 'Best Seller', value: 'Best Seller' },
           { title: 'Limited', value: 'Limited' },
         ],
       },

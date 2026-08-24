@@ -2,11 +2,17 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
 export async function addItem(formData: FormData) {
+  await requireAdminSession()
+
   const name = formData.get('name') as string
   const item_type = formData.get('item_type') as string
-  const category = formData.get('category') as string
+  const category =
+    item_type === 'ingredient'
+      ? ((formData.get('category') as string | null)?.trim() || null)
+      : null
   const unit = formData.get('unit') as string
   const cost_per_unit = parseFloat(formData.get('cost_per_unit') as string) || 0
 
@@ -26,9 +32,14 @@ export async function addItem(formData: FormData) {
 }
 
 export async function updateItem(id: string, formData: FormData) {
+  await requireAdminSession()
+
   const name = formData.get('name') as string
   const item_type = formData.get('item_type') as string
-  const category = formData.get('category') as string
+  const category =
+    item_type === 'ingredient'
+      ? ((formData.get('category') as string | null)?.trim() || null)
+      : null
   const unit = formData.get('unit') as string
   const cost_per_unit = parseFloat(formData.get('cost_per_unit') as string) || 0
 
@@ -43,6 +54,8 @@ export async function updateItem(id: string, formData: FormData) {
 }
 
 export async function deleteItem(id: string) {
+  await requireAdminSession()
+
   await supabaseAdmin.from('stock_levels').delete().eq('inventory_item_id', id)
 
   const { error } = await supabaseAdmin

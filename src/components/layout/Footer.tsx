@@ -18,7 +18,7 @@ export function Footer() {
               Make No Sense
             </p>
             <p className="text-sm text-light-gray leading-relaxed">
-              Nashville's boldest food truck. Unforgettable flavors, zero apologies.
+              Nashville&apos;s boldest food truck. Unforgettable flavors, zero apologies.
             </p>
           </div>
 

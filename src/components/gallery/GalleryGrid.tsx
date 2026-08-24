@@ -174,7 +174,7 @@ function EmptyState() {
         Photos Coming Soon
       </h2>
       <p className="text-light-gray text-base max-w-sm mb-8 leading-relaxed">
-        Check back soon — we're loading up the gallery.
+        Check back soon — we&apos;re loading up the gallery.
       </p>
       <Link
         href="/menu"

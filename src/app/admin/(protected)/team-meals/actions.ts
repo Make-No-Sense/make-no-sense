@@ -2,8 +2,11 @@
 
 import { revalidatePath } from 'next/cache'
 import { supabaseAdmin } from '@/lib/supabase'
+import { requireAdminSession } from '@/lib/admin-auth'
 
 export async function logTeamMeal(formData: FormData) {
+  await requireAdminSession()
+
   const menu_item = (formData.get('menu_item') as string).trim()
   const team_member = (formData.get('team_member') as string).trim()
   const quantity = parseFloat(formData.get('quantity') as string)
@@ -20,6 +23,8 @@ export async function logTeamMeal(formData: FormData) {
 }
 
 export async function deleteTeamMeal(id: string) {
+  await requireAdminSession()
+
   const { error } = await supabaseAdmin
     .from('team_meals')
     .delete()
@@ -31,6 +36,8 @@ export async function deleteTeamMeal(id: string) {
 }
 
 export async function updateTeamMeal(id: string, formData: FormData) {
+  await requireAdminSession()
+
   const menu_item = (formData.get('menu_item') as string).trim()
   const team_member = (formData.get('team_member') as string).trim()
   const quantity = parseFloat(formData.get('quantity') as string)
