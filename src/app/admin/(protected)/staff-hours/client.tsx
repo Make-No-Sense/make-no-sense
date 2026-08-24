@@ -184,8 +184,8 @@ export function StaffHoursClient({
   }
 
   return (
-    <div className="p-6 md:p-10 flex flex-col gap-10">
-      <h1 className="font-display text-3xl uppercase tracking-wide text-[#1B3A5C]">
+    <div className="p-4 md:p-10 flex flex-col gap-10">
+      <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-[#1B3A5C]">
         Staff Hours
       </h1>
 
@@ -193,7 +193,7 @@ export function StaffHoursClient({
       <div className="flex flex-col gap-6">
         {/* Clock-in form */}
         <form ref={formRef} onSubmit={handleClockIn}
-          className="bg-white rounded-xl shadow-sm border border-black/5 p-6 max-w-sm w-full mx-auto flex flex-col gap-4">
+          className="bg-white rounded-xl shadow-sm border border-black/5 p-4 sm:p-6 max-w-sm w-full mx-auto flex flex-col gap-4">
           <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50">
             Clock In / Clock Out
           </p>

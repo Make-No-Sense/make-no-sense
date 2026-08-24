@@ -14,7 +14,6 @@ export type Expense = {
 }
 
 const CATEGORIES = [
-  { value: 'ingredients', label: 'Ingredients' },
   { value: 'fuel',        label: 'Fuel' },
   { value: 'generator',   label: 'Generator' },
   { value: 'equipment',   label: 'Equipment' },
@@ -84,37 +83,37 @@ export function ExpensesClient({
   }
 
   return (
-    <div className="p-6 md:p-10 flex flex-col gap-8">
-      <h1 className="font-display text-3xl uppercase tracking-wide text-[#1B3A5C]">
+    <div className="p-4 md:p-10 flex flex-col gap-8">
+      <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-[#1B3A5C]">
         Expenses
       </h1>
 
       {/* ── Summary cards ────────────────────────────────── */}
-      <div className="flex flex-wrap gap-4 justify-end">
+      <div className="flex gap-3 sm:gap-4 sm:justify-end">
         <div
-          className="relative w-64 rounded-xl shadow-lg overflow-hidden p-5"
-          style={{ background: '#1B3A5C', borderTop: '3px solid #B83232' }}
+          className="flex-1 relative rounded-xl shadow-lg overflow-hidden p-3 sm:p-5"
+          style={{ background: '#1B3A5C', borderTop: '3px solid #B83232', maxWidth: '256px' }}
         >
-          <Calendar size={24} className="absolute top-3 right-3 text-white opacity-30" />
-          <p className="font-display text-xs uppercase tracking-widest text-white/50 mb-2 pr-10">
+          <Calendar size={20} className="absolute top-3 right-3 text-white opacity-30" />
+          <p className="font-display text-[10px] sm:text-xs uppercase tracking-widest text-white/50 mb-1.5 sm:mb-2 pr-7">
             This Month
           </p>
-          <p className="font-mono text-2xl font-bold text-white">{fmt(thisMonth)}</p>
+          <p className="font-mono text-lg sm:text-2xl font-bold text-white">{fmt(thisMonth)}</p>
         </div>
         <div
-          className="relative w-64 rounded-xl shadow-lg overflow-hidden p-5"
-          style={{ background: '#1B3A5C', borderTop: '3px solid #B83232' }}
+          className="flex-1 relative rounded-xl shadow-lg overflow-hidden p-3 sm:p-5"
+          style={{ background: '#1B3A5C', borderTop: '3px solid #B83232', maxWidth: '256px' }}
         >
-          <TrendingUp size={24} className="absolute top-3 right-3 text-white opacity-30" />
-          <p className="font-display text-xs uppercase tracking-widest text-white/50 mb-2 pr-10">
+          <TrendingUp size={20} className="absolute top-3 right-3 text-white opacity-30" />
+          <p className="font-display text-[10px] sm:text-xs uppercase tracking-widest text-white/50 mb-1.5 sm:mb-2 pr-7">
             This Quarter
           </p>
-          <p className="font-mono text-2xl font-bold text-white">{fmt(thisQuarter)}</p>
+          <p className="font-mono text-lg sm:text-2xl font-bold text-white">{fmt(thisQuarter)}</p>
         </div>
       </div>
 
       {/* ── Add expense form ──────────────────────────────── */}
-      <div className="bg-white rounded-xl shadow-sm border border-black/5 p-6 max-w-xl mx-auto w-full">
+      <div className="bg-white rounded-xl shadow-sm border border-black/5 p-4 sm:p-6 max-w-xl mx-auto w-full">
         <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50 mb-5">
           Add Expense
         </p>

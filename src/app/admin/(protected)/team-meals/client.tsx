@@ -51,13 +51,13 @@ export function TeamMealsClient({ logs }: { logs: TeamMealEntry[] }) {
   }
 
   return (
-    <div className="p-6 md:p-10 flex flex-col gap-8">
-      <h1 className="font-display text-3xl uppercase tracking-wide text-[#1B3A5C]">
+    <div className="p-4 md:p-10 flex flex-col gap-8">
+      <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-[#1B3A5C]">
         Team Meals
       </h1>
 
       {/* ── Log form ──────────────────────────────────────── */}
-      <div className="bg-white rounded-xl shadow-sm border border-black/5 p-6 max-w-xl mx-auto w-full">
+      <div className="bg-white rounded-xl shadow-sm border border-black/5 p-4 sm:p-6 max-w-xl mx-auto w-full">
         <p className="font-display text-xs uppercase tracking-widest text-[#1B3A5C]/50 mb-5">
           Log Team Meal
         </p>

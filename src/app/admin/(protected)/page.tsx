@@ -106,29 +106,30 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <div className="p-6 md:p-10">
-      <h1 className="font-display text-3xl uppercase tracking-wide text-admin-navy mb-8">
+    <div className="p-4 md:p-10">
+      <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-admin-navy mb-6 sm:mb-8">
         Dashboard
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5">
         {stats.map(({ label, value, icon: Icon, description }) => (
           <div
             key={label}
-            className="bg-white rounded-xl p-6 flex flex-col gap-4 md:gap-2 shadow-sm border border-black/5"
+            className="bg-white rounded-xl p-3 sm:p-6 flex flex-col gap-2 shadow-sm border border-black/5"
           >
-            <div className="flex items-center justify-between">
-              <p className="text-admin-navy font-display uppercase tracking-wide text-sm">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-admin-navy font-display uppercase tracking-wide text-[10px] sm:text-sm leading-tight">
                 {label}
               </p>
-              <div className="bg-off-white rounded-lg p-2">
-                <Icon size={18} className="text-admin-navy/50" />
+              <div className="bg-off-white rounded-lg p-1.5 sm:p-2 flex-shrink-0">
+                <Icon size={14} className="text-admin-navy/50 sm:hidden" />
+                <Icon size={18} className="text-admin-navy/50 hidden sm:block" />
               </div>
             </div>
-            <p className="font-mono text-4xl font-bold text-[#1B3A5C] md:text-right">
+            <p className="font-mono text-xl sm:text-4xl font-bold text-[#1B3A5C]">
               {value}
             </p>
-            <p className="text-light-gray text-xs font-sans md:text-right">{description}</p>
+            <p className="text-light-gray text-[10px] sm:text-xs font-sans">{description}</p>
           </div>
         ))}
       </div>

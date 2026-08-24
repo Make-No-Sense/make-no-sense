@@ -60,9 +60,9 @@ export function StockTable({ rows }: { rows: StockRow[] }) {
   }
 
   return (
-    <div className="p-6 md:p-10">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-3xl uppercase tracking-wide text-[#1B3A5C]">
+    <div className="p-4 md:p-10">
+      <div className="flex items-center justify-between mb-6 sm:mb-8">
+        <h1 className="font-display text-2xl sm:text-3xl uppercase tracking-wide text-[#1B3A5C]">
           Stock Levels
         </h1>
       </div>

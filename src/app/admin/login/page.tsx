@@ -72,7 +72,11 @@ export default function AdminLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoFocus
-              className="bg-admin-navy border border-off-white/20 rounded px-4 py-3 text-off-white font-sans text-sm placeholder-light-gray focus:outline-none focus:border-truck-red transition-colors"
+              autoComplete="current-password"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              className="bg-admin-navy border border-off-white/20 rounded px-4 py-3 text-off-white font-sans text-base placeholder-light-gray focus:outline-none focus:border-truck-red transition-colors"
               placeholder="Enter admin password"
             />
           </div>
