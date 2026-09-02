@@ -119,13 +119,7 @@ export default async function MenuPage() {
         })}
       </div>
 
-      {/* Combo note */}
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 pb-4">
-        <div className="h-px bg-off-white/15 mb-4" />
-        <p className="text-center font-sans text-sm" style={{ color: '#FAF7F2' }}>
-          All entrees available as a combo, add a side and drink
-        </p>
-      </div>
+
     </div>
   );
 }
