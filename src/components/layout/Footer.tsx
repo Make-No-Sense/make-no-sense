@@ -80,10 +80,12 @@ export function Footer() {
             <p>
               Built by{" "}
               <a
-                href="https://makenosense.info"
+                href="https://www.github.com/mayaajike"
                 className="hover:text-off-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                makenosense.info
+                Lanski Codes
               </a>
             </p>
           </div>
